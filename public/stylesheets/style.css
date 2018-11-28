@@ -1,0 +1,299 @@
+body {
+    background-color: #faf9f9;
+}
+
+.menu{
+	width: 20%;
+	margin: auto;
+	padding: 7px;
+    //border: 2px solid red;
+}
+
+.logo{
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+.title{
+	margin: 0;
+    padding:0;
+	
+	text-align: center;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 200%;
+	color: #555b6e;
+}
+
+.subtitle{
+	margin: 5px;
+    padding:0;
+	
+	
+	text-align: left;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 70%;
+	color: #555b6e;
+}
+
+.side-bar-logo{
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom:5px;
+	display: block;
+}
+
+.side-bar-text{
+	margin: 0;
+    padding:0;
+	
+	margin-top:5px;
+	margin-left:10px;
+	
+	text-align: left;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 100%;
+	color: #555b6e;
+}
+
+.button {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	
+	padding:10px;
+	display: block;
+    background-color: #89b0ae;
+	
+    border: none;
+	border-radius: 5px;
+	
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 110%;
+    color: #faf9f9;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #9ebcb6;
+}
+
+.button:active {
+    background-color: #bee3db;
+}
+
+#playbutton{
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	padding:10px;
+	display: block;
+    background-color: #89b0ae;
+	
+    border: none;
+	border-radius: 5px;
+	
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 110%;
+    color: #faf9f9;
+    text-align: center;
+}
+
+#playbutton:hover {
+    background-color: #9ebcb6;
+}
+
+#playbutton:active {
+    background-color: #bee3db;
+}
+
+.container{
+	width: 500px;
+	margin:auto;
+	margin-top:30px;
+	//border: 1px solid green;
+}
+
+.board{
+	float:left;
+	width: 300px;
+	height: 605px;
+	border-radius: 10px;
+	background-color: #eaeaea;
+	margin-bottom:10px;
+}
+
+.color-picker{
+	width: 500px;
+	height: 60px;
+}
+
+.color-picker-grid{
+	float:left;
+	width: 300px;
+	height: 50px;
+	
+	border-radius: 10px;
+	background-color: #eaeaea;
+	
+	display: grid;
+	grid-template-columns: auto auto auto auto auto auto;
+	//border: 1px solid green;
+}
+
+.color-picker-grid-item{
+	//border: 1px solid green;
+}
+
+.color-picker-slot-1{
+	margin:25%;
+	height:50%;
+	display: block;
+	
+	background-color:#ffd08e;
+	
+	border:none;
+	border-radius: 50%;
+}
+
+.color-picker-slot-2{
+	margin:25%;
+	height:50%;
+	display: block;
+	
+	background-color:#efc3f5;
+	
+	border:none;
+	border-radius: 50%;
+}
+
+.color-picker-slot-3{
+	margin:25%;
+	height:50%;
+	display: block;
+	
+	background-color:#5273af;
+	
+	border:none;
+	border-radius: 50%;
+}
+
+.color-picker-slot-4{
+	margin:25%;
+	height:50%;
+	display: block;
+	
+	background-color:#bcbd8b;
+	
+	border:none;
+	border-radius: 50%;
+}
+
+.color-picker-slot-5{
+	margin:25%;
+	height:50%;
+	display: block;
+	
+	background-color:#d35269;
+	
+	border:none;
+	border-radius: 50%;
+}
+
+.color-picker-slot-6{
+	margin:25%;
+	height:50%;
+	display: block;
+	
+	background-color:#704c55;
+	
+	border:none;
+	border-radius: 50%;
+}
+
+.submit-button{
+	float:left;
+	width: 100px;
+	height: 30px;
+
+	margin-left:10px;
+	padding:10px;
+	display: block;
+    background-color: #89b0ae;
+	
+    border: none;
+	border-radius: 5px;
+	
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 130%;
+    color: #faf9f9;
+    text-align: center;
+}
+
+.side-bar{
+	float:left;
+	width: 120px;
+	height: 605px;
+
+	margin-left:10px;
+	display: block;
+}
+
+.code-peg-grid {
+	display: grid;
+	grid-template-columns: auto auto auto auto auto;
+	//border: 1px solid green;
+}
+
+.key-peg-grid {
+	display: grid;
+	grid-template-columns: auto auto;
+	//border: 1px solid green;
+	padding-top:15px;
+	padding-bottom:5px;
+	grid-gap: 5px 0;
+}
+
+.code-peg-grid-item{
+	height:45px;
+}
+
+
+.key-peg-grid-item{
+	//border: 1px solid green;
+}
+
+.line{
+	margin-top: 10px;
+	margin-bottom: 0;
+	margin-left:20px;
+	margin-right:80px;
+	
+	height: 1px;
+	color: red;
+	background-color: #c2c2c2;
+	border: none;
+}
+
+.code-peg-slot {
+	margin:26%;
+	height:55%;
+	display: block;
+    background-color: #f1f1f1;
+	
+	border-style: solid;
+	border-width:2px;
+	border-color:#555b6e;
+	border-radius: 50%;
+}
+
+.key-peg-slot {
+	margin:auto;
+	width:35%;
+	height:100%;
+	display: block;
+    background-color: #a5a9b7;
+	border-radius: 50%;
+}
