@@ -109,10 +109,8 @@ function setRound(round) {
 }
 
 function updateClock() {
-    console.log("updateClock called");
     var curTime = Math.floor(Date.now() / 1000);
     var elapsed = curTime - startTime; 
-    console.log(curTime);
     var minutes = Math.floor(elapsed / 60);
     var seconds = Math.floor(elapsed % 60);  
     minutes = prettifyTime(minutes);
