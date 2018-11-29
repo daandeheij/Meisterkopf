@@ -2,7 +2,7 @@ generateRows();
 //saves the current time in seconds (after page load) for the clock
 var startTime = Math.floor(Date.now() / 1000);
 //get the counter object of document that needs to be updated
-var timecounter = document.getElementById("timecounter");
+var timecounter = document.getElementById("timelabel");
 //call clock function every second
 window.setInterval(updateClock, 1000);
 
@@ -105,7 +105,7 @@ function keypin(row, pin, color) {
 }
 
 function setRound(round) {
-
+    document.getElementById("roundlabel").innerHTML = "ROUND " + round + "/8"
 }
 
 function updateClock() {
