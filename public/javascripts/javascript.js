@@ -128,9 +128,12 @@ var socket = new WebSocket("ws://localhost:3000");
 
 socket.onmessage = function(event){
     console.log(event.data);
+    socket.send(event.data);
+    //var message = new exports.message("test1", "test2");
+
 }
 
 socket.onopen = function(){
-    socket.send("Hello from the client!");
+    //socket.send("Hello from the client!");
     console.log("Sending message.");
 };
