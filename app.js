@@ -19,14 +19,12 @@ var Message = require("./public/javascripts/message.js");
 
 var players = [];
 var queue = [];
-var games = [];
+var games = new Map();
 var gamesPlayed = 0;
 var minutesPlayed = 0;
 
-var idCounter = 0;
-
 gameServer.on("connection", function(player) {
-    
+
     players.push(player);
     queue.push(player);
 
@@ -35,7 +33,9 @@ gameServer.on("connection", function(player) {
         var playerB = queue.pop();
 
         var game = new Game(playerA, playerB);
-        games.push(game);
+
+        games.set(playerA, game);
+        games.set(playerB, game);
 
         game.startGame();
     }
@@ -45,15 +45,14 @@ gameServer.on("connection", function(player) {
 
     player.on("message", function incoming(data) {
         var message = Message.decode(data);
+        var game = games.get(player);
 
-        games.forEach(function(game) {
-            if(player == game.codemaker){
-                console.log("The player is a codemaker")
-            }
-            else if (player == game.codebreaker){
-                console.log("The player is a codebreaker")
-            }
-        });
+        if(player == game.getCodemaker()){
+            console.log("The player is a codemaker")
+        }
+        else if (player == game.getCodebreaker()){
+            console.log("The player is a codebreaker")
+        }
     });
 
     
@@ -78,16 +77,20 @@ function Game(playerA, playerB){
     this.codebreaker = playerB;
     this.round = 0;
 
+    this.getCodemaker = function(){
+        return this.codemaker;
+    }
+
+    this.getCodebreaker = function(){
+        return this.codebreaker;
+    }
+
     this.startGame = function(){
         var message = new Message("start-game", "you are the codemaker");
-        codemaker.send(message.encode());
+        this.codemaker.send(message.encode());
 
         message = new Message("start-game", "you are the codebreaker");
-        codebreaker.send(message.encode());
-    };
-
-    this.updateGame = function(){
-        console.log("Updating game.");
+        this.codebreaker.send(message.encode());
     };
 }
 
