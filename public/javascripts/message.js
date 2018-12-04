@@ -1,26 +1,11 @@
-
-class Message{
-    constructor(type, data) {
+function Message(type, data){
         this.type = type;
         this.data = data;
-    }
+        this.encode = function(){return JSON.stringify(this);}
+    };
 
-    get getType(){ 
-        return this.type; 
-    }
+    Message.decode = function(data){return JSON.parse(data);}
 
-    get getData(){
-        return this.data;
-    }
-
-    encode(){
-        return JSON.stringify(this);
-    }
-
-    static decode(data){
-
-        return JSON.parse(data);
-    }
+if(!(typeof exports === "undefined")){
+    module.exports = Message;
 }
-
-module.exports = Message;

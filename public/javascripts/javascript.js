@@ -127,13 +127,16 @@ function prettifyTime(i) {
 var socket = new WebSocket("ws://localhost:3000");
 
 socket.onmessage = function(event){
-    console.log(event.data);
-    socket.send(event.data);
-    //var message = new exports.message("test1", "test2");
 
+    let receivedmessage = Message.decode(event.data);
+    let receivedType = receivedMessage.type;
+    let receivedData = receivedMessage.data;
+    console.log("received: " + receivedmessage.data +" "+receivedmessage.type);
+   
 }
 
 socket.onopen = function(){
-    //socket.send("Hello from the client!");
-    console.log("Sending message.");
+    let message = new Message("pairrme", "I am player 1!");
+    console.log("sent: " + message);
+    socket.send(message.encode());
 };
