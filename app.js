@@ -12,28 +12,83 @@ var indexRouter = require("./routes/index");
 app.get("/", indexRouter);
 app.get("/play", indexRouter);
 
-
-
-
-const Message = require("./public/javascripts/message.js");
 var server = http.createServer(app);
+var gameServer = new websocket.Server({ server });
 
-const wss = new websocket.Server({ server });
+var Message = require("./public/javascripts/message.js");
 
-wss.on("connection", function(ws) {
+var players = [];
+var queue = [];
+var games = [];
+var gamesPlayed = 0;
+var minutesPlayed = 0;
+
+var idCounter = 0;
+
+gameServer.on("connection", function(player) {
     
-    //let's slow down the server response time a bit to make the change visible on the client side
-    setTimeout(function() {
-        let message = new Message("pairme", "I am player 1!");
-        console.log(message.encode());
-        ws.send(message.encode());
-        ws.close();
-    }, 2000);
-    
-    ws.on("message", function incoming(message) {
-        let receivedMessage = Message.decode(message);
-        console.log(receivedMessage.encode());
+    players.push(player);
+    queue.push(player);
+
+    if(queue.length == 2){
+        var playerA = queue.pop();
+        var playerB = queue.pop();
+
+        var game = new Game(playerA, playerB);
+        games.push(game);
+
+        game.startGame();
+    }
+
+    console.log("players.length: " + players.length);
+    console.log("games.length: " + games.length);
+
+    player.on("message", function incoming(data) {
+        var message = Message.decode(data);
+
+        games.forEach(function(game) {
+            if(player == game.codemaker){
+                console.log("The player is a codemaker")
+            }
+            else if (player == game.codebreaker){
+                console.log("The player is a codebreaker")
+            }
+        });
     });
+
+    
+
+    // let's slow down the server response time a bit to make the change visible on the client side
+    //setTimeout(function() {
+    //    var message = new Message("pairme", "I am player 1!");
+    //    console.log(message.encode());
+    //    client.send(message.encode());
+    //    //ws.close();
+    //}, 2000);
+    
+    
 });
+
+function Game(playerA, playerB){
+
+    // Constructor
+    this.playerA = playerA;
+    this.playerB = playerB;
+    this.codemaker = playerA;
+    this.codebreaker = playerB;
+    this.round = 0;
+
+    this.startGame = function(){
+        var message = new Message("start-game", "you are the codemaker");
+        codemaker.send(message.encode());
+
+        message = new Message("start-game", "you are the codebreaker");
+        codebreaker.send(message.encode());
+    };
+
+    this.updateGame = function(){
+        console.log("Updating game.");
+    };
+}
 
 server.listen(port);
