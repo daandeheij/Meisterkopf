@@ -15,8 +15,8 @@ function setupRound(announcedPlayerType){
 
 //incoming from server: Codemaker has made a code. Game starts
 function startRound(){
-    currentRound = 0;
     currentGuess = 0;
+    setRound(currentRound + 1);
 }
 
 function endRound(result){

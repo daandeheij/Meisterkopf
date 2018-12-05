@@ -221,7 +221,7 @@ function setGuess(row, guess){
 }
 
 function setRound(round) {
-    document.getElementById("roundlabel").innerHTML = "ROUND " + round + "/8"
+    document.getElementById("roundlabel").innerHTML = "ROUND " + round + "/2"
 }
 
 function updateClock() {
