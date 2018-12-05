@@ -33,9 +33,10 @@ gameServer.on("connection", function(player) {
     // Assign a unique player id to the player.
     player.id = playerIdCounter++;
 
+    console.log("Player " + player.id + " has connected to the server.");
+
     // Add the player to the matchmaking queue.
     queue.push(player);
-
 
     if(queue.length == 2){
         // The queue has reached a size of 2.
@@ -90,8 +91,6 @@ gameServer.on("connection", function(player) {
             // The games map contains a game that has this player in it.
             var game = games.get(player);
 
-            console.log("Player " + player.id + " has disconnected from game " + game.id);
-
             // Tell the other player that this player has disconnected.
             game.playerDisconnected(player);
         }
@@ -115,7 +114,7 @@ function Game(playerA, playerB){
     this.playerB = playerB;
     this.codemaker = playerA;
     this.codebreaker = playerB;
-    
+
     this.startTime = new Date();
 
     this.code = [];
@@ -123,16 +122,19 @@ function Game(playerA, playerB){
     this.currentGuess = 0;
 
     this.setupRound = function(){
+        Console.log("Setting up round " + this.currentRound + " for game " + this.id);
         this.codemaker.send(Message.setupRound("codemaker"));
         this.codebreaker.send(Message.setupRound("codebreaker"));
     }
 
     this.startRound = function(){
+        Console.log("Starting round " + this.currentRound + " for game " + this.id);
         this.playerA.send(Message.startRound());
         this.playerB.send(Message.startRound());
     };
 
     this.newRound = function(){
+        Console.log("Creating new round for game " + this.id);
 
         // Swap the roles of both players.
         var temp = this.codemaker;
@@ -148,11 +150,13 @@ function Game(playerA, playerB){
     }
 
     this.submitCode = function(code){
+        console.log("Codemaker of game " + this.id + " has sumbitted code " + code);
         this.code = code;
         this.startRound();
     }
 
     this.submitGuess = function(guess){
+        console.log("Codebreaker of game " + this.id + " has sumbitted guess " + guess);
 
         // There are still guesses and rounds left, announce the guess.
         this.announceGuess(guess);
@@ -177,6 +181,8 @@ function Game(playerA, playerB){
     }
 
     this.endRound = function(){
+        Console.log("Ending round " + this.currentRound + " for game " + this.id);
+
         // Announce the round end to both players.
         this.playerA.send(Message.endRound(result));
         this.playerB.send(Message.endRound(result));
@@ -192,18 +198,21 @@ function Game(playerA, playerB){
     }
 
     this.announceGuess = function(guess){
+        Console.log("Announcing guess " + guess + " to players " + this.playerA + " and " + this.playerB + " for game " + this.id);
         // Announce the guess to both players.
         this.playerA.send(Message.announceGuess(guess));
         this.playerB.send(Message.announceGuess(guess));
     }
 
     this.announceKeys = function(keys){
+        Console.log("Announcing keys " + keys + " to players " + this.playerA + " and " + this.playerB + " for game " + this.id);
         // Announce the keys to both players.
         this.playerA.send(Message.announceKeys(keys));
         this.playerB.send(Message.announceKeys(keys));
     }
 
     this.playerDisconnected = function(player){
+        Console("Player " + player.id + " disconnected from game " + this.id);
         // Send the player disconnected message to the player that didn't disconnect.
         if (player == playerA){
             this.playerB.send(Message.playerDisconnected());
@@ -217,6 +226,7 @@ function Game(playerA, playerB){
     }
 
     this.endGame = function(){
+        Console.log("Ending game " + this.id);
         // Remove this game from the games map.
         games.delete(this.playerA);
         games.delete(this.playerB);
