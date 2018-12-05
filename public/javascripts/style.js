@@ -13,6 +13,8 @@ const BROWN = "#704c55";
 //call clock function every second
 //window.setInterval(updateClock, 1000);
 
+generateRows();
+
 function newRound(round){
     generateRows();
 }
