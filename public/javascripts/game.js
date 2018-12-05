@@ -1,20 +1,8 @@
 var playerType = null;
-var currentGuess = null;
-var currentRound = null;
+var currentGuess = 0;
+var currentRound = 0;
 const MAXROUNDS = 1;
 const MAXGUESSES = 11;
-
-function incrementCurrentGuess(){
-    if(currentGuess == MAXGUESSES){
-        roundHasEnded();
-        if(currentRound < MAXROUNDS)
-        {
-            newRound(currentRound++);
-        }
-    }
-    currentGuess++;
-    //and maybe do some style shit? :D
-}
 
 function roundHasEnded(){
 //show results. do some style stuff
@@ -24,23 +12,42 @@ function roundHasEnded(){
 //incoming from server: Client's PlayerType (codemaker/codebreaker)
 function setupRound(announcedPlayerType){
     playerType = announcedPlayerType;
+    if(playerType == "codemaker"){//TODO: pick a solution}
+}
+    else {//we are the codebreaker//todo pop-up wait}
+}
 }
 
 //incoming from server: Codemaker has made a code. Game starts
 function startRound(){
     currentRow = 0;
+    currentGuess = 0;
+    newRound(currentRound);
+}
+
+function endRound(result){
+    if(currentRound==MAXROUNDS){
+        //end game. Show result
+    }
+    else{
+    currentRound++;
+}
+    //Todo: something with result. show.
 }
 
 //incoming from server: the codebreaker's guess
 function announceGuess(guess){
-
+    setGuess(currentRow, guess);
+    currentGuess++;
 }
 
 //incoming from server: the keys for last guess (correct/or in combination)
 //black denotes correct position
 //white denotes color in combination but not at correct position
-function announceKeys(numberOfWhite, numberOfBlack)
+function announceKeys(keys)
 {
+    var numberOfBlack = keys[0];
+    var numberOfWhite = keys[1];
     //first put all the blackpins
     for(j = 0; j < numberOfBlack; j++)
     {
@@ -50,7 +57,6 @@ function announceKeys(numberOfWhite, numberOfBlack)
     {
         keypin(currentGuess, k, 'white');
     }
-    incrementCurrentGuess();
 }
 
 //incoming from server: other client has disconnected. 
@@ -60,15 +66,15 @@ function playerDisconnected()
 }
 
 //from this client to server: submit the code (solution)
-function submitCode(code)
+function submitCode()
 {
-    socket.send(Message.submitCode(code));
+    socket.send(Message.submitCode(getSolution()));
 }
 
 //from this client to server: submit this guess
-function submitGuess(guess)
+function submitGuess()
 {
-    socket.send(Message.submitGuess(guess));
+    socket.send(Message.submitGuess(getGuess(currentGuess)));
 }
 
 var socket = new WebSocket("ws://localhost:3000");
@@ -87,10 +93,13 @@ socket.onmessage = function(event){
             announceGuess(receivedMessage.data);
             break;
         case "announceKeys":
-            announceKeys(receivedMessage.data)
+            announceKeys(receivedMessage.data);
             break;
         case "playerDisconnected":
             playerDisconnected();
+            break;
+        case 'endRound':
+            endRound(receivedMessage.data);
             break;
     }
 }

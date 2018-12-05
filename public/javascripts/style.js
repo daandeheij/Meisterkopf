@@ -106,7 +106,8 @@ function drop(event) {
 }
 
 function submit() {
-    submitGuess();
+    if(playerType == "codebreaker"){submitGuess();}
+    else{submitCode();}
 }
 
 //sets a pin
@@ -144,6 +145,12 @@ function getGuess(row){
         }
     }
     return guess;
+}
+
+function getSolution()
+{
+    //TODO: implement from board
+    return ["GREEN", "GREEN", "GREEN", "GREEN"];
 }
 
 //Sets the codepegs of row to colors in array(4) guess
