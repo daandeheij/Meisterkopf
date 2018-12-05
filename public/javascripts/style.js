@@ -163,8 +163,33 @@ function getGuess(row){
 
 function getSolution()
 {
-    //TODO: implement from board
-    return ["GREEN", "GREEN", "GREEN", "GREEN"];
+    var guess = [];
+    for(j=0; j<4; j++)
+    {
+        var currentCodePeg = document.getElementById("solution-" + j);
+        var currentColor = currentCodePeg.style.backgroundColor;
+        switch(currentColor){
+            case "rgb(255, 208, 142)":
+                guess.push("YELLOW");
+                break;
+            case "rgb(239, 195, 245)":
+                guess.push("PINK");
+                break;
+            case "rgb(82, 115, 175)":
+                guess.push("BLUE");
+                break;
+            case "rgb(188, 189, 139)":
+                guess.push("GREEN");
+                break;
+            case "rgb(211, 82, 105)":
+                guess.push("RED");
+                break;
+            case "rgb(112, 76, 85)":
+                guess.push("BROWN");
+                break;
+        }
+    }
+    return guess;
 }
 
 //Sets the codepegs of row to colors in array(4) guess
