@@ -21,11 +21,6 @@ Message.startGame = function(){
     return message.encode();
 }
 
-Message.startRound = function(currentRound){
-    var message = new Message("startRound", currentRound);
-    return message.encode();
-}
-
 Message.playerDisconnected = function(){
     var message = new Message("playerDisconnected", null);
     return message.encode();
