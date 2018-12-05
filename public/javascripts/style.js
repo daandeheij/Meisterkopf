@@ -7,7 +7,7 @@ const RED = "#d35269";
 const BROWN = "#704c55";
 
 // Declare some properties of the board.
-const NUMBEROFROWS = 12;
+const NUMBEROFROWS = 8;
 const NUMBEROFCODESLOTS = 4;
 const NUMBEROFKEYSLOTS = 4;
 
