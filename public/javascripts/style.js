@@ -6,13 +6,16 @@ const GREEN = "#bcbd8b";
 const RED = "#d35269";
 const BROWN = "#704c55";
 
-generateRows();
 //saves the current time in seconds (after page load) for the clock
-var startTime = Math.floor(Date.now() / 1000);
+//var startTime = Math.floor(Date.now() / 1000);
 //get the counter object of document that needs to be updated
-var timecounter = document.getElementById("timelabel");
+//var timecounter = document.getElementById("timelabel");
 //call clock function every second
-window.setInterval(updateClock, 1000);
+//window.setInterval(updateClock, 1000);
+
+function newRound(round){
+    generateRows();
+}
 
 function generateRows() {
     //generates the rows of the board
@@ -103,7 +106,7 @@ function drop(event) {
 }
 
 function submit() {
-    console.log("CLICK");
+    submitGuess();
 }
 
 //sets a pin

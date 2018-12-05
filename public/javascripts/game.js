@@ -1,10 +1,16 @@
 var playerType = null;
 var currentGuess = null;
+var currentRound = null;
+const MAXROUNDS = 1;
 const MAXGUESSES = 11;
 
 function incrementCurrentGuess(){
     if(currentGuess == MAXGUESSES){
         roundHasEnded();
+        if(currentRound < MAXROUNDS)
+        {
+            newRound(currentRound++);
+        }
     }
     currentGuess++;
     //and maybe do some style shit? :D
@@ -54,7 +60,7 @@ function playerDisconnected()
 }
 
 //from this client to server: submit the code (solution)
-function submitCode(code)
+function submitCode()
 {
     var message = new Message("submitCode", code);
     socket.send(message.encode());
