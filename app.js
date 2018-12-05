@@ -25,7 +25,7 @@ var minutesPlayed = 0;
 var playerIdCounter = 0;
 var gameIdCounter = 0;
 
-const MAXGUESSES = 11;
+const MAXGUESSES = 7;
 const MAXROUNDS = 1;
 
 gameServer.on("connection", function(player) {
@@ -122,19 +122,19 @@ function Game(playerA, playerB){
     this.currentGuess = 0;
 
     this.setupRound = function(){
-        Console.log("Setting up round " + this.currentRound + " for game " + this.id);
+        console.log("Setting up round " + this.currentRound + " for game " + this.id);
         this.codemaker.send(Message.setupRound("codemaker"));
         this.codebreaker.send(Message.setupRound("codebreaker"));
     }
 
     this.startRound = function(){
-        Console.log("Starting round " + this.currentRound + " for game " + this.id);
+        console.log("Starting round " + this.currentRound + " for game " + this.id);
         this.playerA.send(Message.startRound());
         this.playerB.send(Message.startRound());
     };
 
     this.newRound = function(){
-        Console.log("Creating new round for game " + this.id);
+        console.log("Creating new round for game " + this.id);
 
         // Swap the roles of both players.
         var temp = this.codemaker;
@@ -161,27 +161,56 @@ function Game(playerA, playerB){
         // There are still guesses and rounds left, announce the guess.
         this.announceGuess(guess);
 
-        // TODO: Determine the keys to announce.
-        // var keys = .....
+        // Determine the keys.
+        var keys = this.getKeys(guess);
 
-        // TODO: Announce the keys.
-        // this.announceKeys(keys);
+        // Announce the keys.
+        this.announceKeys(keys);
 
         // Increment the current guess.
         this.currentGuess++;
 
-        if(guess == this.code){
+        if(keys[0] == this.code.length){
             // The guess matches the code, start a new round.
-            this.endRound();
+            this.endRound("success");
         }
         else if(!this.guessesLeft()){
             // The guess was wrong and there are no guesses left, end the round.
-            this.endRound();
+            this.endRound("fail");
         }
     }
 
-    this.endRound = function(){
-        Console.log("Ending round " + this.currentRound + " for game " + this.id);
+    this.getKeys = function(guess){
+        var black = 0;
+        var white = 0;
+
+        var copy = [];
+        for(var i = 0; i < guess.length; i++){
+            copy.push(guess[i]);
+        }
+
+        for (var i = 0; i < this.code.length; i++){
+            if (this.code[i] == copy[i]){
+                black++;
+                copy[i] = null;
+            }
+        }
+
+        for(var i = 0; i < this.code.length; i++){
+            for(var j = 0; j < copy.length; j++){
+                if(this.code[i] == copy[j]){
+                    white++;
+                    copy[j] = null;
+                    break;
+                }
+            }
+        }
+
+        return [black, white];
+    }
+
+    this.endRound = function(result){
+        console.log("Ending round " + this.currentRound + " with result " + result + " for game " + this.id);
 
         // Announce the round end to both players.
         this.playerA.send(Message.endRound(result));
@@ -198,21 +227,21 @@ function Game(playerA, playerB){
     }
 
     this.announceGuess = function(guess){
-        Console.log("Announcing guess " + guess + " to players " + this.playerA + " and " + this.playerB + " for game " + this.id);
+        console.log("Announcing guess " + guess + " to players " + this.playerA.id + " and " + this.playerB.id + " for game " + this.id);
         // Announce the guess to both players.
         this.playerA.send(Message.announceGuess(guess));
         this.playerB.send(Message.announceGuess(guess));
     }
 
     this.announceKeys = function(keys){
-        Console.log("Announcing keys " + keys + " to players " + this.playerA + " and " + this.playerB + " for game " + this.id);
+        console.log("Announcing keys " + keys + " to players " + this.playerA.id + " and " + this.playerB.id + " for game " + this.id);
         // Announce the keys to both players.
         this.playerA.send(Message.announceKeys(keys));
         this.playerB.send(Message.announceKeys(keys));
     }
 
     this.playerDisconnected = function(player){
-        Console("Player " + player.id + " disconnected from game " + this.id);
+        console.log("Player " + player.id + " disconnected from game " + this.id);
         // Send the player disconnected message to the player that didn't disconnect.
         if (player == playerA){
             this.playerB.send(Message.playerDisconnected());
@@ -226,7 +255,7 @@ function Game(playerA, playerB){
     }
 
     this.endGame = function(){
-        Console.log("Ending game " + this.id);
+        console.log("Ending game " + this.id);
         // Remove this game from the games map.
         games.delete(this.playerA);
         games.delete(this.playerB);
