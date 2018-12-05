@@ -12,11 +12,11 @@ const NUMBEROFCODESLOTS = 4;
 const NUMBEROFKEYSLOTS = 4;
 
 //saves the current time in seconds (after page load) for the clock
-//var startTime = Math.floor(Date.now() / 1000);
+var startTime = Math.floor(Date.now() / 1000);
 //get the counter object of document that needs to be updated
-//var timecounter = document.getElementById("timelabel");
+var timecounter = document.getElementById("timelabel");
 //call clock function every second
-//window.setInterval(updateClock, 1000);
+window.setInterval(updateClock, 1000);
 
 generateRows();
 

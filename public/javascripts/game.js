@@ -98,9 +98,3 @@ socket.onmessage = function(event){
             break;
     }
 }
-
-//socket.onopen = function(){
-    //var message = new Message("pairrme", "I am player 1!");
-    //console.log("sent: " + message);
-    //socket.send(message.encode());
-//};
