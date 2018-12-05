@@ -33,7 +33,6 @@ function endRound(result){
 //incoming from server: the codebreaker's guess
 function announceGuess(guess){
     setGuess(currentGuess, guess);
-    currentGuess++;
 }
 
 //incoming from server: the keys for last guess (correct/or in combination)
@@ -52,6 +51,7 @@ function announceKeys(keys)
     {
         keypin(currentGuess, k, 'white');
     }
+    currentGuess++;
 }
 
 //incoming from server: other client has disconnected. 
