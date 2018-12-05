@@ -123,21 +123,3 @@ function prettifyTime(i) {
     if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
     return i;
 }
-
-var socket = new WebSocket("ws://localhost:3000");
-
-socket.onmessage = function(event){
-    //let receivedmessage = Message.decode(event.data);
-    //let receivedType = receivedMessage.type;
-    //let receivedData = receivedMessage.data;
-    //console.log("received: " + receivedmessage.data +" "+receivedmessage.type);
-    var message = new Message("pairrme", "I am player 1!");
-    console.log("sent: " + message);
-    socket.send(message.encode());
-}
-
-socket.onopen = function(){
-    //var message = new Message("pairrme", "I am player 1!");
-    //console.log("sent: " + message);
-    //socket.send(message.encode());
-};
