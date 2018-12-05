@@ -62,7 +62,7 @@ function generateRows() {
 
     // Generate 4 columns of the solution code slots.
     for (var i = 0; i < numberOfCodeSlots; i++) {
-        content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot"></div></div>';
+        content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
     }
 
     // Close the div.
