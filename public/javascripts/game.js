@@ -15,15 +15,23 @@ function setupRound(announcedPlayerType){
 function startRound(){
     currentGuess = 0;
     setRound(currentRound + 1);
+    if(playerType == "codebreaker"){
+        setStatus("Player has picked a code. Please submit a guess");
+    }
+    else
+    {
+        setStatus("Waiting for the other player to make a guess");
+    }
 }
 
 function endRound(result){
     if(currentRound==MAXROUNDS){
-        //end game. Show result
+        setStatus("Game has ended! " + result);
     }
     else{
     currentRound++;
     clearBoard();
+    setStatus("Round ended!")
 }
     //Todo: something with result. show.
 }
@@ -50,12 +58,19 @@ function announceKeys(keys)
         keypin(currentGuess, k, 'white');
     }
     currentGuess++;
+    if(playerType == "codebreaker"){
+        setStatus("Keep trying ;)");
+    }
+    else
+    {
+        setStatus("Other player has made guess: " + currentGuess + " /8");
+    }
 }
 
 //incoming from server: other client has disconnected. 
 function playerDisconnected()
 {
-
+    setStatus("The other player has left the game :(")
 }
 
 //from this client to server: submit the code (solution)
