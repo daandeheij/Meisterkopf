@@ -57,8 +57,8 @@ gameServer.on("connection", function(player) {
         games.set(playerA, game);
         games.set(playerB, game);
 
-        // Setup the game.
-        game.setupGame();
+        // Setup the first round.
+        game.setupRound();
     }
 
     // The receive method will be called when a player has sent a message.
@@ -125,18 +125,17 @@ function Game(playerA, playerB){
     this.currentRound = 0;
     this.currentGuess = 0;
 
-    this.setupGame = function(){
-        this.codemaker.send(Message.setupGame("codemaker"));
-        this.codebreaker.send(Message.setupGame("codebreaker"));
+    this.setupRound = function(){
+        this.codemaker.send(Message.setupRound("codemaker"));
+        this.codebreaker.send(Message.setupRound("codebreaker"));
     }
 
-    this.startGame = function(){
-        this.playerA.send(Message.startGame());
-        this.playerB.send(Message.startGame());
+    this.startRound = function(){
+        this.playerA.send(Message.startRound());
+        this.playerB.send(Message.startRound());
     };
 
     this.newRound = function(){
-
 
         // Swap the roles of both players.
         var temp = this.codemaker;
@@ -147,13 +146,13 @@ function Game(playerA, playerB){
         this.currentRound++;
         this.currentGuess = 0;
 
-        // Setup the game again.
-        this.setupGame();
+        // Setup the next round.
+        this.setupRound();
     }
 
     this.submitCode = function(code){
         this.code = code;
-        this.startGame();
+        this.startRound();
     }
 
     this.submitGuess = function(guess){

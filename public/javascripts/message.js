@@ -11,13 +11,13 @@ Message.decode = function(data){
     return JSON.parse(data);
 }
 
-Message.setupGame = function(playerType){
-    var message = new Message("setupGame", playerType);
+Message.setupRound = function(playerType){
+    var message = new Message("setupRound", playerType);
     return message.encode();
 }
 
-Message.startGame = function(){
-    var message = new Message("startGame", null);
+Message.startRound = function(){
+    var message = new Message("startRound", null);
     return message.encode();
 }
 
