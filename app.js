@@ -23,9 +23,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', indexRouter);
+app.set('view engine', 'ejs')
+app.get('/', (req, res) => {
+    res.render('splash.ejs', { playersOnline: 2, gamesPlayed: gamesPlayed, minutesPlayed: minutesPlayed });
+})
+
 app.get('/play', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -42,8 +45,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-module.exports = app;
 
 var server = http.createServer(app);
 var gameServer = new websocket.Server({ server });
