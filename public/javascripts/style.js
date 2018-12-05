@@ -15,8 +15,20 @@ const BROWN = "#704c55";
 
 generateRows();
 
-function newRound(round){
-    generateRows();
+function clearBoard(){
+    for (var i = 0; i < numberOfRows; i++) {
+        for (var j = 0; j < numberOfCodeSlots; j++) {
+            var codeslot = document.getElementById("guess-" + i + '-' + j);
+            var keyslot = document.getElementById("key-" + i + '-' + j);
+            codeslot.style.backgroundColor = "#f1f1f1";
+            keyslot.style.backgroundColor = "#a5a9b7";
+        }
+    }
+    for (var i = 0; i < 4; i++)
+    {
+        var solutionslot = document.getElementById("solution-" + i);
+        solutionslot.style.backgroundColor = "#f1f1f1";
+    }
 }
 
 function generateRows() {

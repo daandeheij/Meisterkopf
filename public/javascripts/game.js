@@ -4,11 +4,6 @@ var currentRound = 0;
 const MAXROUNDS = 1;
 const MAXGUESSES = 11;
 
-function roundHasEnded(){
-//show results. do some style stuff
-
-}
-
 //incoming from server: Client's PlayerType (codemaker/codebreaker)
 function setupRound(announcedPlayerType){
     playerType = announcedPlayerType;
@@ -31,6 +26,7 @@ function endRound(result){
     }
     else{
     currentRound++;
+    clearBoard();
 }
     //Todo: something with result. show.
 }
