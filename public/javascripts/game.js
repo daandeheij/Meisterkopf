@@ -33,16 +33,14 @@ function announceGuess(guess){
 //incoming from server: the keys for last guess (correct/or in combination)
 //black denotes correct position
 //white denotes color in combination but not at correct position
-function announceKeys(keys)
+function announceKeys(numberOfWhite, numberOfBlack)
 {
-    var whitePins = keys[0];
-    var blackPins = keys[1];
     //first put all the blackpins
-    for(j = 0; j < blackPins; j++)
+    for(j = 0; j < numberOfBlack; j++)
     {
         keypin(currentGuess, j, 'black');        
     }
-    for(k = blackPins; k < blackPins+whitePins; k++)
+    for(k = numberOfBlack; k < numberOfBlack+numberOfWhite; k++)
     {
         keypin(currentGuess, k, 'white');
     }
