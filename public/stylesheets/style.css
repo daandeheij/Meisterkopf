@@ -58,6 +58,19 @@ body {
 	color: #555b6e;
 }
 
+.side-bar-status-text{
+	margin: 0;
+    padding:0;
+	
+	margin-top:200px;
+	margin-left:10px;
+	
+	text-align: left;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 70%;
+	color: #555b6e;	
+}
+
 .button {
 	width: 100%;
 	margin-left: auto;
