@@ -156,8 +156,15 @@ function Game(playerA, playerB){
     }
 
     this.submitGuess = function(guess){
+
         // There are still guesses and rounds left, announce the guess.
         this.announceGuess(guess);
+
+        // TODO: Determine the keys to announce.
+        // var keys = .....
+
+        // TODO: Announce the keys.
+        // this.announceKeys(keys);
 
         // Increment the current guess.
         this.currentGuess++;
