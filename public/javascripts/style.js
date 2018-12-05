@@ -6,6 +6,11 @@ const GREEN = "#bcbd8b";
 const RED = "#d35269";
 const BROWN = "#704c55";
 
+// Declare some properties of the board.
+const NUMBEROFROWS = 12;
+const NUMBEROFCODESLOTS = 4;
+const NUMBEROFKEYSLOTS = 4;
+
 //saves the current time in seconds (after page load) for the clock
 //var startTime = Math.floor(Date.now() / 1000);
 //get the counter object of document that needs to be updated
@@ -16,8 +21,8 @@ const BROWN = "#704c55";
 generateRows();
 
 function clearBoard(){
-    for (var i = 0; i < numberOfRows; i++) {
-        for (var j = 0; j < numberOfCodeSlots; j++) {
+    for (var i = 0; i < NUMBEROFROWS; i++) {
+        for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
             var codeslot = document.getElementById("guess-" + i + '-' + j);
             var keyslot = document.getElementById("key-" + i + '-' + j);
             codeslot.style.backgroundColor = "#f1f1f1";
@@ -37,27 +42,22 @@ function generateRows() {
     guesses = document.getElementById('guesses');
     solution = document.getElementById('solution');
 
-    // Declare some properties of the board.
-    var numberOfRows = 12;
-    var numberOfCodeSlots = 4;
-    var numberOfKeySlots = 4;
-
     // Declare an empty content string, in which the board html will be generated.
     var content = '';
 
     // Generates 12 rows of code and key slots.
-    for (var i = 0; i < numberOfRows; i++) {
+    for (var i = 0; i < NUMBEROFROWS; i++) {
         content += '<div class="code-peg-grid">';
 
         // Generates 4 columns of code slots.
-        for (var j = 0; j < numberOfCodeSlots; j++) {
+        for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
             content += '<div class="code-peg-grid-item"><div id="guess-' + i + '-' + j + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
         }
 
         content += '<div class="key-peg-grid">';
 
         // Generates a 2-by-2 grid of key slots.
-        for (var j = 0; j < numberOfKeySlots; j++) {
+        for (var j = 0; j < NUMBEROFKEYSLOTS; j++) {
             content += '<div class="key-peg-grid-item"><div id="key-' + i + '-' + j + '" class="key-peg-slot"></div></div>';
         }
 
@@ -73,7 +73,7 @@ function generateRows() {
     content = '<div class="code-peg-grid">';
 
     // Generate 4 columns of the solution code slots.
-    for (var i = 0; i < numberOfCodeSlots; i++) {
+    for (var i = 0; i < NUMBEROFCODESLOTS; i++) {
         content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
     }
 
