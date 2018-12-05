@@ -102,9 +102,16 @@ gameServer.on("connection", function(player) {
         else{
             console.log("Player " + player.id + " has disconnected.");
 
+            // Remove the player from the list of players.
+            // Remove the players from the list of players.
+            var index = players.indexOf(this.player);
+            if (index > -1) {
+                players.splice(index, 1);
+            }
+
             // Since the player was not in-game, the player is in the queue.
             // So remove the player from the queue.
-            var index = queue.indexOf(player);
+            index = queue.indexOf(player);
             if (index > -1) {
                 queue.splice(index, 1);
             }
@@ -120,6 +127,8 @@ function Game(playerA, playerB){
     this.codemaker = playerA;
     this.codebreaker = playerB;
     
+    this.startTime = new Date();
+
     this.code = [];
     this.currentRound = 0;
     this.currentGuess = 0;
@@ -130,8 +139,8 @@ function Game(playerA, playerB){
     }
 
     this.startGame = function(){
-        this.playerA.send(Message.startGame(currentRound));
-        this.playerB.send(Message.startGame(currentRound));
+        this.playerA.send(Message.startGame());
+        this.playerB.send(Message.startGame());
     };
 
     this.newRound = function(){
@@ -157,7 +166,7 @@ function Game(playerA, playerB){
             // There are still guesses and rounds left, announce the guess.
             this.announceGuess(guess);
 
-            if(guess == code){
+            if(guess == this.code){
                 // The guess matches the code, start a new round.
                 this.newRound();
             }
@@ -177,27 +186,55 @@ function Game(playerA, playerB){
     }
 
     this.announceGuess = function(guess){
+        // Announce the guess to both players.
         this.playerA.send(Message.announceGuess(guess));
         this.playerB.send(Message.announceGuess(guess));
     }
 
     this.announceKeys = function(keys){
+        // Announce the keys to both players.
         this.playerA.send(Message.announceKeys(keys));
         this.playerB.send(Message.announceKeys(keys));
     }
 
     this.playerDisconnected = function(player){
+        // Send the player disconnected message to the player that didn't disconnect.
         if (player == playerA){
             this.playerA.send(Message.playerDisconnected());
         }
         else if (player == playerB){
             this.playerB.send(Message.playerDisconnected());
         }
+
+        // End the game.
+        this.endGame();
     }
 
     this.endGame = function(){
-        this.codemaker.close();
-        this.codebreaker.close();
+        // Remove the players from the list of players.
+        var index = players.indexOf(this.playerA);
+        if (index > -1) {
+            players.splice(index, 1);
+        }
+
+        index = players.indexOf(this.playerB);
+        if (index > -1) {
+            players.splice(index, 1);
+        }
+
+        // Remove this game from the games map.
+        games.delete(this.playerA);
+        games.delete(this.playerB);
+
+        // Close the connections of both players.
+        this.playerA.close();
+        this.playerB.close();
+
+        // Increment the games played counter.
+        gamesPlayed++;
+
+        // Increment the minutes played counter.
+        minutesPlayed += (new Date() - this.startTime) / 1000 / 60;
     }
 
     this.roundsLeft = function(){
