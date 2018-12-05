@@ -20,7 +20,7 @@ function setupRound(announcedPlayerType){
 
 //incoming from server: Codemaker has made a code. Game starts
 function startRound(){
-    currentRow = 0;
+    currentRound = 0;
     currentGuess = 0;
     newRound(currentRound);
 }
@@ -37,7 +37,7 @@ function endRound(result){
 
 //incoming from server: the codebreaker's guess
 function announceGuess(guess){
-    setGuess(currentRow, guess);
+    setGuess(currentGuess, guess);
     currentGuess++;
 }
 
