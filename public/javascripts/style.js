@@ -224,6 +224,10 @@ function setRound(round) {
     document.getElementById("roundlabel").innerHTML = "ROUND " + round + "/2"
 }
 
+function setStatus(status) {
+    document.getElementById("statuslabel").innerHTML = status;
+}
+
 function updateClock() {
     var curTime = Math.floor(Date.now() / 1000);
     var elapsed = curTime - startTime; 

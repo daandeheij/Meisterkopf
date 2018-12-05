@@ -7,10 +7,8 @@ const MAXGUESSES = 11;
 //incoming from server: Client's PlayerType (codemaker/codebreaker)
 function setupRound(announcedPlayerType){
     playerType = announcedPlayerType;
-    if(playerType == "codemaker"){//TODO: pick a solution}
-}
-    else {//we are the codebreaker//todo pop-up wait}
-}
+    if(playerType == "codemaker"){setStatus("Please pick a code!")}
+    else {setStatus("Please wait for other player to pick code!")}
 }
 
 //incoming from server: Codemaker has made a code. Game starts
@@ -72,7 +70,18 @@ function submitGuess()
     socket.send(Message.submitGuess(getGuess(currentGuess)));
 }
 
+function welcomeMessage()
+{
+    if(socket.readyState == socket.OPEN && playerType != "codemaker")
+    {
+        setStatus("Waiting for player");
+    }
+}
+
 var socket = new WebSocket("ws://localhost:3000");
+
+window.setTimeout(welcomeMessage, 1000);
+
 
 socket.onmessage = function(event){
     var receivedMessage = Message.decode(event.data);
@@ -96,5 +105,5 @@ socket.onmessage = function(event){
         case 'endRound':
             endRound(receivedMessage.data);
             break;
-    }
+    };
 }
