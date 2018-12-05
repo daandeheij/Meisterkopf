@@ -22,12 +22,12 @@ function roundHasEnded(){
 }
 
 //incoming from server: Client's PlayerType (codemaker/codebreaker)
-function setupStart(announcedPlayerType){
+function setupRound(announcedPlayerType){
     playerType = announcedPlayerType;
 }
 
 //incoming from server: Codemaker has made a code. Game starts
-function gameStart(){
+function startRound(){
     currentRow = 0;
 }
 
@@ -60,18 +60,15 @@ function playerDisconnected()
 }
 
 //from this client to server: submit the code (solution)
-function submitCode()
+function submitCode(code)
 {
-    var message = new Message("submitCode", code);
-    socket.send(message.encode());
+    socket.send(Message.submitCode(code));
 }
 
 //from this client to server: submit this guess
-function submitGuess()
+function submitGuess(guess)
 {
-    var code = getGuess(currentGuess);
-    var message = new Message("submitGuess", code);
-    socket.send(message.encode());
+    socket.send(Message.submitGuess(guess));
 }
 
 var socket = new WebSocket("ws://localhost:3000");
@@ -80,11 +77,11 @@ socket.onmessage = function(event){
     var receivedMessage = Message.decode(event.data);
     var receivedType = receivedMessage.type;
     switch(receivedType) {
-        case "setupStart":
-            setupStart(receivedMessage.data);
+        case "setupRound":
+            setupRound(receivedMessage.data);
             break;
-        case "gameStart":
-            gameStart();
+        case "startRound":
+            startRound();
             break;
         case "announceGuess":
             announceGuess(receivedMessage.data);

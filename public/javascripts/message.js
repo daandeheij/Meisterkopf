@@ -41,6 +41,16 @@ Message.endRound = function(result){
     return message.encode();
 }
 
+Message.submitCode = function(code){
+    var message = new Message("submitCode", code);
+    return message.encode();
+}
+
+Message.submitGuess = function(guess){
+    var message = new Message("submitGuess", guess);
+    return message.encode();
+}
+
 
 if(!(typeof exports === "undefined")){
     module.exports = Message;
