@@ -33,9 +33,6 @@ gameServer.on("connection", function(player) {
     // Assign a unique player id to the player.
     player.id = playerIdCounter++;
 
-    // Add the player to the list of players.
-    players.push(player);
-
     // Add the player to the matchmaking queue.
     queue.push(player);
 
