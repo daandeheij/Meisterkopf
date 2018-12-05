@@ -1,3 +1,11 @@
+//define the following color constants:
+const YELLOW = "#ffd08e";
+const PINK = "#efc3f5";
+const BLUE = "#5273af";
+const GREEN = "#bcbd8b";
+const RED = "#d35269";
+const BROWN = "#704c55";
+
 generateRows();
 //saves the current time in seconds (after page load) for the clock
 var startTime = Math.floor(Date.now() / 1000);
@@ -72,23 +80,22 @@ function drop(event) {
 
     switch (data) {
         case "color-picker-slot-0":
-            event.target.style.backgroundColor = "#ffd08e";
-            keypin(0, 0, 'white');
+            event.target.style.backgroundColor = YELLOW;
             break;
         case "color-picker-slot-1":
-            event.target.style.backgroundColor = "#efc3f5";
+            event.target.style.backgroundColor = PINK;
             break;
         case "color-picker-slot-2":
-            event.target.style.backgroundColor = "#5273af";
+            event.target.style.backgroundColor = BLUE;
             break;
         case "color-picker-slot-3":
-            event.target.style.backgroundColor = "#bcbd8b";
+            event.target.style.backgroundColor = GREEN;
             break;
         case "color-picker-slot-4":
-            event.target.style.backgroundColor = "#d35269";
+            event.target.style.backgroundColor = RED;
             break;
         case "color-picker-slot-5":
-            event.target.style.backgroundColor = "#704c55";
+            event.target.style.backgroundColor = BROWN;
             break;
     }
 
@@ -99,9 +106,69 @@ function submit() {
     console.log("CLICK");
 }
 
+//sets a pin
 function keypin(row, pin, color) {
     var pinToChange = document.getElementById('key-' + row + '-' + pin);
     pinToChange.style.backgroundColor = color;
+}
+
+//returns the colors of the row in an array
+function getGuess(row){
+    var guess = [];
+    for(j=0; j<4; j++)
+    {
+        var currentCodePeg = document.getElementById("guess-" + row + '-' + j);
+        var currentColor = currentCodePeg.style.backgroundColor;
+        switch(currentColor){
+            case "rgb(255, 208, 142)":
+                guess.push("YELLOW");
+                break;
+            case "rgb(239, 195, 245)":
+                guess.push("PINK");
+                break;
+            case "rgb(82, 115, 175)":
+                guess.push("BLUE");
+                break;
+            case "rgb(188, 189, 139)":
+                guess.push("GREEN");
+                break;
+            case "rgb(211, 82, 105)":
+                guess.push("RED");
+                break;
+            case "rgb(112, 76, 85)":
+                guess.push("BROWN");
+                break;
+        }
+    }
+    return guess;
+}
+
+//Sets the codepegs of row to colors in array(4) guess
+function setGuess(row, guess){
+    for(j=0; j<4; j++)
+    {
+        var currentCodePeg = document.getElementById("guess-" + row + '-' + j);
+        switch(guess[j]){
+            case "YELLOW":
+            currentCodePeg.style.backgroundColor = YELLOW;
+                break;
+            case "PINK":
+            currentCodePeg.style.backgroundColor = PINK;
+                break;
+            case "BLUE":
+            currentCodePeg.style.backgroundColor = BLUE;
+                break;
+            case "GREEN":
+            currentCodePeg.style.backgroundColor = GREEN;
+                break;
+            case "RED":
+            currentCodePeg.style.backgroundColor = RED;
+                break;
+            case "BROWN":
+            currentCodePeg.style.backgroundColor = BROWN;
+                break;
+        }
+    }
 }
 
 function setRound(round) {

@@ -1,4 +1,19 @@
 var playerType = null;
+var currentGuess = null;
+const MAXGUESSES = 11;
+
+function incrementCurrentGuess(){
+    if(currentGuess == MAXGUESSES){
+        roundHasEnded();
+    }
+    currentGuess++;
+    //and maybe do some style shit? :D
+}
+
+function roundHasEnded(){
+//show results. do some style stuff
+
+}
 
 //incoming from server: Client's PlayerType (codemaker/codebreaker)
 function setupStart(announcedPlayerType){
@@ -7,7 +22,7 @@ function setupStart(announcedPlayerType){
 
 //incoming from server: Codemaker has made a code. Game starts
 function gameStart(){
-
+    currentRow = 0;
 }
 
 //incoming from server: the codebreaker's guess
@@ -16,9 +31,22 @@ function announceGuess(guess){
 }
 
 //incoming from server: the keys for last guess (correct/or in combination)
+//black denotes correct position
+//white denotes color in combination but not at correct position
 function announceKeys(keys)
 {
-
+    var whitePins = keys[0];
+    var blackPins = keys[1];
+    //first put all the blackpins
+    for(j = 0; j < blackPins; j++)
+    {
+        keypin(currentGuess, j, 'black');        
+    }
+    for(k = blackPins; k < blackPins+whitePins; k++)
+    {
+        keypin(currentGuess, k, 'white');
+    }
+    incrementCurrentGuess();
 }
 
 //incoming from server: other client has disconnected. 
@@ -35,8 +63,9 @@ function submitCode(code)
 }
 
 //from this client to server: submit this guess
-function submitGuess(code)
+function submitGuess()
 {
+    var code = getGuess(currentGuess);
     var message = new Message("submitGuess", code);
     socket.send(message.encode());
 }
@@ -49,14 +78,19 @@ socket.onmessage = function(event){
     switch(receivedType) {
         case "setupStart":
             setupStart(receivedMessage.data);
+            break;
         case "gameStart":
             gameStart();
+            break;
         case "announceGuess":
             announceGuess(receivedMessage.data);
+            break;
         case "announceKeys":
             announceKeys(receivedMessage.data)
+            break;
         case "playerDisconnected":
             playerDisconnected();
+            break;
     }
 }
 
