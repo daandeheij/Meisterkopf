@@ -153,12 +153,26 @@ function Game(playerA, playerB){
     }
 
     this.submitGuess = function(guess){
+        if(this.guessesLeft() > 0 && this.roundsLeft() > 0){
+            // There are still guesses and rounds left, announce the guess.
+            this.announceGuess(guess);
 
+            if(guess == code){
+                // The guess matches the code, start a new round.
+                this.newRound();
+            }
+        }
+
+        // Increment the current guess.
+        this.currentGuess++;
         
-        this.announceGuess(guess);
-
-        if(this.guessesLeft() == 0){
-            
+        if(this.guessesLeft() == 0 && this.roundsLeft() > 0){
+            // There are no guesses left, but there are still rounds left, start a new round.
+            this.newRound();
+        }
+        else if(this.guessesLeft() == 0 && this.roundsLeft() == 0){
+            // There are no guesses and rounds left, end the game.
+            this.endGame();
         }
     }
 
