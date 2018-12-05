@@ -17,7 +17,6 @@ function setupRound(announcedPlayerType){
 function startRound(){
     currentRound = 0;
     currentGuess = 0;
-    newRound(currentRound);
 }
 
 function endRound(result){
