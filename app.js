@@ -17,7 +17,6 @@ var gameServer = new websocket.Server({ server });
 
 var Message = require("./public/javascripts/message.js");
 
-var players = [];
 var queue = [];
 var games = new Map();
 var gamesPlayed = 0;
@@ -26,8 +25,8 @@ var minutesPlayed = 0;
 var playerIdCounter = 0;
 var gameIdCounter = 0;
 
-const maxGuesses = 11;
-const maxRounds = 1;
+const MAXGUESSES = 11;
+const MAXROUNDS = 1;
 
 gameServer.on("connection", function(player) {
 
@@ -58,8 +57,8 @@ gameServer.on("connection", function(player) {
         games.set(playerA, game);
         games.set(playerB, game);
 
-        // Start the game.
-        game.startGame();
+        // Setup the game.
+        game.setupGame();
     }
 
     // The receive method will be called when a player has sent a message.
@@ -80,10 +79,10 @@ gameServer.on("connection", function(player) {
         // Read the message.
         switch(message.type) {
             case "submitCode":
-                game.submitCode();
+                game.submitCode(message.data);
                 break;
             case "submitGuess":
-                game.submitGuess();
+                game.submitGuess(message.data);
                 break;
         }
     });
@@ -101,13 +100,6 @@ gameServer.on("connection", function(player) {
         }
         else{
             console.log("Player " + player.id + " has disconnected.");
-
-            // Remove the player from the list of players.
-            // Remove the players from the list of players.
-            var index = players.indexOf(this.player);
-            if (index > -1) {
-                players.splice(index, 1);
-            }
 
             // Since the player was not in-game, the player is in the queue.
             // So remove the player from the queue.
@@ -144,6 +136,8 @@ function Game(playerA, playerB){
     };
 
     this.newRound = function(){
+
+
         // Swap the roles of both players.
         var temp = this.codemaker;
         this.codemaker = this.codebreaker;
@@ -159,28 +153,37 @@ function Game(playerA, playerB){
 
     this.submitCode = function(code){
         this.code = code;
+        this.startGame();
     }
 
     this.submitGuess = function(guess){
-        if(this.guessesLeft() > 0 && this.roundsLeft() > 0){
-            // There are still guesses and rounds left, announce the guess.
-            this.announceGuess(guess);
-
-            if(guess == this.code){
-                // The guess matches the code, start a new round.
-                this.newRound();
-            }
-        }
+        // There are still guesses and rounds left, announce the guess.
+        this.announceGuess(guess);
 
         // Increment the current guess.
         this.currentGuess++;
-        
-        if(this.guessesLeft() == 0 && this.roundsLeft() > 0){
-            // There are no guesses left, but there are still rounds left, start a new round.
+
+        if(guess == this.code){
+            // The guess matches the code, start a new round.
+            this.endRound();
+        }
+        else if(!this.guessesLeft()){
+            // The guess was wrong and there are no guesses left, end the round.
+            this.endRound();
+        }
+    }
+
+    this.endRound = function(){
+        // Announce the round end to both players.
+        this.playerA.send(Message.endRound(result));
+        this.playerB.send(Message.endRound(result));
+
+        if(this.roundsLeft()){
+            // There are rounds left, start a new round.
             this.newRound();
         }
-        else if(this.guessesLeft() == 0 && this.roundsLeft() == 0){
-            // There are no guesses and rounds left, end the game.
+        else{
+            // There are no rounds left, end the game.
             this.endGame();
         }
     }
@@ -200,10 +203,10 @@ function Game(playerA, playerB){
     this.playerDisconnected = function(player){
         // Send the player disconnected message to the player that didn't disconnect.
         if (player == playerA){
-            this.playerA.send(Message.playerDisconnected());
+            this.playerB.send(Message.playerDisconnected());
         }
         else if (player == playerB){
-            this.playerB.send(Message.playerDisconnected());
+            this.playerA.send(Message.playerDisconnected());
         }
 
         // End the game.
@@ -211,17 +214,6 @@ function Game(playerA, playerB){
     }
 
     this.endGame = function(){
-        // Remove the players from the list of players.
-        var index = players.indexOf(this.playerA);
-        if (index > -1) {
-            players.splice(index, 1);
-        }
-
-        index = players.indexOf(this.playerB);
-        if (index > -1) {
-            players.splice(index, 1);
-        }
-
         // Remove this game from the games map.
         games.delete(this.playerA);
         games.delete(this.playerB);
@@ -238,11 +230,11 @@ function Game(playerA, playerB){
     }
 
     this.roundsLeft = function(){
-        return maxRounds - this.currentRound;
+        return (MAXROUNDS - this.currentRound) > 0;
     }
 
     this.guessesLeft = function(){
-        return maxGuesses - this.currentGuess;
+        return (MAXGUESSES - this.currentGuess) > 0;
     }
 }
 

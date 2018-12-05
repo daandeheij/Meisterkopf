@@ -36,6 +36,11 @@ Message.announceKeys = function(keys){
     return message.encode();
 }
 
+Message.endRound = function(result){
+    var message = new Message("endRound", result);
+    return message.encode();
+}
+
 
 if(!(typeof exports === "undefined")){
     module.exports = Message;
