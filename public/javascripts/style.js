@@ -7,7 +7,6 @@ const RED = "#d35269";
 const BROWN = "#704c55";
 
 // Define some constant properties of the board.
-const NUMBEROFROWS = 8;
 const NUMBEROFCODESLOTS = 4;
 const NUMBEROFKEYSLOTS = 4;
 
@@ -26,7 +25,7 @@ function Board(){
         var content = '';
 
         // Generates 12 rows of code and key slots.
-        for (var i = 0; i < NUMBEROFROWS; i++) {
+        for (var i = 0; i < MAXGUESSES; i++) {
             content += '<div class="code-peg-grid">';
 
             // Generates 4 columns of code slots.
