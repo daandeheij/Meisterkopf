@@ -172,5 +172,8 @@ function Game(){
 
     this.playerDisconnected = function(){
         sidebar.setStatus("The other player has left the game :(");
+        board.disable();
+        hideColorPicker();
+        hideButton();
     }
 }
