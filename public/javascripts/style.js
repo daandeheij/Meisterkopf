@@ -212,7 +212,7 @@ function Sidebar(){
     }
 
     this.setRound = function(round) {
-        roundLabel.innerHTML = "ROUND " + round + "/ 2";
+        roundLabel.innerHTML = "ROUND " + round + "/2";
     }
 }
 
