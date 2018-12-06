@@ -1,4 +1,4 @@
-//define the following color constants:
+// Define the following color constants:
 const YELLOW = "#ffd08e";
 const PINK = "#efc3f5";
 const BLUE = "#5273af";
@@ -6,96 +6,234 @@ const GREEN = "#bcbd8b";
 const RED = "#d35269";
 const BROWN = "#704c55";
 
-// Declare some properties of the board.
+// Define some constant properties of the board.
 const NUMBEROFROWS = 8;
 const NUMBEROFCODESLOTS = 4;
 const NUMBEROFKEYSLOTS = 4;
 
-//saves the current time in seconds (after page load) for the clock
-var startTime = Math.floor(Date.now() / 1000);
-//get the counter object of document that needs to be updated
-var timecounter = document.getElementById("timelabel");
-//call clock function every second
-window.setInterval(updateClock, 1000);
+var board = new Board();
+var sidebar = new Sidebar();
+var colorpicker = new Colorpicker();
 
-generateRows();
+// Call update clock every second.
+var clock = setInterval(sidebar.updateClock, 1000);
 
-function clearBoard(){
-    for (var i = 0; i < NUMBEROFROWS; i++) {
-        for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
-            var codeslot = document.getElementById("guess-" + i + '-' + j);
-            var keyslot = document.getElementById("key-" + i + '-' + j);
-            codeslot.style.backgroundColor = "#f1f1f1";
-            keyslot.style.backgroundColor = "#a5a9b7";
+function Board(){
+
+    this.setup = function(){
+        //generates the rows of the board
+        // Find the elements with the guesses and solutions ids.
+        var guesses = document.getElementById('guesses');
+        var solution = document.getElementById('solution');
+
+        // Declare an empty content string, in which the board html will be generated.
+        var content = '';
+
+        // Generates 12 rows of code and key slots.
+        for (var i = 0; i < NUMBEROFROWS; i++) {
+            content += '<div class="code-peg-grid">';
+
+            // Generates 4 columns of code slots.
+            for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
+                content += '<div class="code-peg-grid-item"><div id="guess-' + i + '-' + j + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
+            }
+
+            content += '<div class="key-peg-grid">';
+
+            // Generates a 2-by-2 grid of key slots.
+            for (var j = 0; j < NUMBEROFKEYSLOTS; j++) {
+                content += '<div class="key-peg-grid-item"><div id="key-' + i + '-' + j + '" class="key-peg-slot"></div></div>';
+            }
+
+            // Close all the divs.
+            content += '</div>';
+            content += '</div>';
+        }
+
+        // Add the generated html to the guesses element.
+        guesses.innerHTML += content;
+
+        // Generate new html for the solution element.
+        content = '<div class="code-peg-grid">';
+
+        // Generate 4 columns of the solution code slots.
+        for (var i = 0; i < NUMBEROFCODESLOTS; i++) {
+            content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
+        }
+
+        // Close the div.
+        content += '</div>';
+
+        // Add the generated html to the solution element.
+        solution.innerHTML += content;
+    }
+
+    this.reset = function(){
+        for (var i = 0; i < NUMBEROFROWS; i++) {
+            for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
+                var codeslot = document.getElementById("guess-" + i + '-' + j);
+                var keyslot = document.getElementById("key-" + i + '-' + j);
+                codeslot.style.backgroundColor = "#f1f1f1";
+                keyslot.style.backgroundColor = "#a5a9b7";
+            }
+        }
+        for (var i = 0; i < 4; i++)
+        {
+            var solutionslot = document.getElementById("solution-" + i);
+            solutionslot.style.backgroundColor = "#f1f1f1";
         }
     }
-    for (var i = 0; i < 4; i++)
-    {
-        var solutionslot = document.getElementById("solution-" + i);
-        solutionslot.style.backgroundColor = "#f1f1f1";
+
+    this.setKey = function(row, pin, color){
+        var pinToChange = document.getElementById('key-' + row + '-' + pin);
+        pinToChange.style.backgroundColor = color;
+    }
+
+    this.getGuess = function(row){
+        var guess = [];
+
+        for(j = 0; j < NUMBEROFCODESLOTS; j++)
+        {
+            var codeslot = document.getElementById("guess-" + row + '-' + j);
+            var color = codeslot.style.backgroundColor;
+
+            switch(color){
+                case "rgb(255, 208, 142)":
+                    guess.push("YELLOW");
+                    break;
+                case "rgb(239, 195, 245)":
+                    guess.push("PINK");
+                    break;
+                case "rgb(82, 115, 175)":
+                    guess.push("BLUE");
+                    break;
+                case "rgb(188, 189, 139)":
+                    guess.push("GREEN");
+                    break;
+                case "rgb(211, 82, 105)":
+                    guess.push("RED");
+                    break;
+                case "rgb(112, 76, 85)":
+                    guess.push("BROWN");
+                    break;
+            }
+        }
+        return guess;
+    }
+
+    this.setGuess = function(row, guess){
+        for(j = 0; j < 4; j++)
+        {
+            var codeslot = document.getElementById("guess-" + row + '-' + j);
+
+            switch(guess[j]){
+                case "YELLOW":
+                codeslot.style.backgroundColor = YELLOW;
+                    break;
+                case "PINK":
+                codeslot.style.backgroundColor = PINK;
+                    break;
+                case "BLUE":
+                codeslot.style.backgroundColor = BLUE;
+                    break;
+                case "GREEN":
+                codeslot.style.backgroundColor = GREEN;
+                    break;
+                case "RED":
+                codeslot.style.backgroundColor = RED;
+                    break;
+                case "BROWN":
+                codeslot.style.backgroundColor = BROWN;
+                    break;
+            }
+        }
+    }
+
+    this.getSolution = function(){
+        var guess = [];
+
+        for(j = 0; j < NUMBEROFCODESLOTS; j++)
+        {
+            var codeslot = document.getElementById("solution-" + j);
+            var color = codeslot.style.backgroundColor;
+
+            switch(color){
+                case "rgb(255, 208, 142)":
+                    guess.push("YELLOW");
+                    break;
+                case "rgb(239, 195, 245)":
+                    guess.push("PINK");
+                    break;
+                case "rgb(82, 115, 175)":
+                    guess.push("BLUE");
+                    break;
+                case "rgb(188, 189, 139)":
+                    guess.push("GREEN");
+                    break;
+                case "rgb(211, 82, 105)":
+                    guess.push("RED");
+                    break;
+                case "rgb(112, 76, 85)":
+                    guess.push("BROWN");
+                    break;
+            }
+        }
+        return guess;
     }
 }
 
-function generateRows() {
-    //generates the rows of the board
-    // Find the elements with the guesses and solutions ids.
-    guesses = document.getElementById('guesses');
-    solution = document.getElementById('solution');
+function Sidebar(){
 
-    // Declare an empty content string, in which the board html will be generated.
-    var content = '';
+    this.startTime = Math.floor(Date.now() / 1000);
+    this.timeLabel = document.getElementById("timeLabel");
+    this.statusLabel = document.getElementById("statusLabel");
+    this.roundLabel = document.getElementById("roundLabel");
 
-    // Generates 12 rows of code and key slots.
-    for (var i = 0; i < NUMBEROFROWS; i++) {
-        content += '<div class="code-peg-grid">';
+    this.updateClock = function(){
+        console.log("TEST");
 
-        // Generates 4 columns of code slots.
-        for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
-            content += '<div class="code-peg-grid-item"><div id="guess-' + i + '-' + j + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
-        }
+        var currentTime = Math.floor(Date.now() / 1000);
+        var elapsed = currentTime - sidebar.startTime;
 
-        content += '<div class="key-peg-grid">';
+        var minutes = Math.floor(elapsed / 60);
+        var seconds = Math.floor(elapsed % 60);
 
-        // Generates a 2-by-2 grid of key slots.
-        for (var j = 0; j < NUMBEROFKEYSLOTS; j++) {
-            content += '<div class="key-peg-grid-item"><div id="key-' + i + '-' + j + '" class="key-peg-slot"></div></div>';
-        }
+        minutes = sidebar.prettifyTime(minutes);
+        seconds = sidebar.prettifyTime(seconds);
 
-        // Close all the divs.
-        content += '</div>';
-        content += '</div>';
+        this.timeLabel.innerHTML = "TIME " + minutes + ":" + seconds;     
     }
 
-    // Add the generated html to the guesses element.
-    guesses.innerHTML += content;
-
-    // Generate new html for the solution element.
-    content = '<div class="code-peg-grid">';
-
-    // Generate 4 columns of the solution code slots.
-    for (var i = 0; i < NUMBEROFCODESLOTS; i++) {
-        content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
+    // Helper function for updateClock. Adds leading zeroes
+    this.prettifyTime = function(i) {
+        // add zero in front of numbers < 10
+        if (i < 10) {
+            i = "0" + i;
+        };
+        return i;
     }
 
-    // Close the div.
-    content += '</div>';
+    this.setStatus = function(status) {
+        statusLabel.innerHTML = status;
+    }
 
-    // Add the generated html to the solution element.
-    solution.innerHTML += content;
+    this.setRound = function(round) {
+        roundLabel.innerHTML = "ROUND " + round + "/ 2";
+    }
 }
 
-function allowDrop(event) {
+function allowDrop(event){
     event.preventDefault();
 }
 
-function drag(event) {
+function drag(event){
     event.dataTransfer.setData("id", event.target.id);
 }
 
-function drop(event) {
-    var data = event.dataTransfer.getData("id")
+function drop(event){
+    var id = event.dataTransfer.getData("id")
 
-    switch (data) {
+    switch (id) {
         case "color-picker-slot-0":
             event.target.style.backgroundColor = YELLOW;
             break;
@@ -117,129 +255,4 @@ function drop(event) {
     }
 
     event.preventDefault();
-}
-
-function submit() {
-    if(playerType == "codebreaker"){submitGuess();}
-    else{submitCode();}
-}
-
-//sets a pin
-function keypin(row, pin, color) {
-    var pinToChange = document.getElementById('key-' + row + '-' + pin);
-    pinToChange.style.backgroundColor = color;
-}
-
-//returns the colors of the row in an array
-function getGuess(row){
-    var guess = [];
-    for(j=0; j<4; j++)
-    {
-        var currentCodePeg = document.getElementById("guess-" + row + '-' + j);
-        var currentColor = currentCodePeg.style.backgroundColor;
-        switch(currentColor){
-            case "rgb(255, 208, 142)":
-                guess.push("YELLOW");
-                break;
-            case "rgb(239, 195, 245)":
-                guess.push("PINK");
-                break;
-            case "rgb(82, 115, 175)":
-                guess.push("BLUE");
-                break;
-            case "rgb(188, 189, 139)":
-                guess.push("GREEN");
-                break;
-            case "rgb(211, 82, 105)":
-                guess.push("RED");
-                break;
-            case "rgb(112, 76, 85)":
-                guess.push("BROWN");
-                break;
-        }
-    }
-    return guess;
-}
-
-function getSolution()
-{
-    var guess = [];
-    for(j=0; j<4; j++)
-    {
-        var currentCodePeg = document.getElementById("solution-" + j);
-        var currentColor = currentCodePeg.style.backgroundColor;
-        switch(currentColor){
-            case "rgb(255, 208, 142)":
-                guess.push("YELLOW");
-                break;
-            case "rgb(239, 195, 245)":
-                guess.push("PINK");
-                break;
-            case "rgb(82, 115, 175)":
-                guess.push("BLUE");
-                break;
-            case "rgb(188, 189, 139)":
-                guess.push("GREEN");
-                break;
-            case "rgb(211, 82, 105)":
-                guess.push("RED");
-                break;
-            case "rgb(112, 76, 85)":
-                guess.push("BROWN");
-                break;
-        }
-    }
-    return guess;
-}
-
-//Sets the codepegs of row to colors in array(4) guess
-function setGuess(row, guess){
-    for(j=0; j<4; j++)
-    {
-        var currentCodePeg = document.getElementById("guess-" + row + '-' + j);
-        switch(guess[j]){
-            case "YELLOW":
-            currentCodePeg.style.backgroundColor = YELLOW;
-                break;
-            case "PINK":
-            currentCodePeg.style.backgroundColor = PINK;
-                break;
-            case "BLUE":
-            currentCodePeg.style.backgroundColor = BLUE;
-                break;
-            case "GREEN":
-            currentCodePeg.style.backgroundColor = GREEN;
-                break;
-            case "RED":
-            currentCodePeg.style.backgroundColor = RED;
-                break;
-            case "BROWN":
-            currentCodePeg.style.backgroundColor = BROWN;
-                break;
-        }
-    }
-}
-
-function setRound(round) {
-    document.getElementById("roundlabel").innerHTML = "ROUND " + round + "/2"
-}
-
-function setStatus(status) {
-    document.getElementById("statuslabel").innerHTML = status;
-}
-
-function updateClock() {
-    var curTime = Math.floor(Date.now() / 1000);
-    var elapsed = curTime - startTime; 
-    var minutes = Math.floor(elapsed / 60);
-    var seconds = Math.floor(elapsed % 60);  
-    minutes = prettifyTime(minutes);
-    seconds = prettifyTime(seconds);
-    timecounter.innerHTML = "TIME " + minutes + ":" + seconds;      
-}
-
-//helper function for updateClock. Adds leading zeroes
-function prettifyTime(i) {
-    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-    return i;
 }

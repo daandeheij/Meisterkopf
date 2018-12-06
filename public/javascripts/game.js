@@ -1,124 +1,132 @@
-var playerType = null;
-var currentGuess = 0;
-var currentRound = 0;
 const MAXROUNDS = 1;
 const MAXGUESSES = 11;
 
-//incoming from server: Client's PlayerType (codemaker/codebreaker)
-function setupRound(announcedPlayerType){
-    playerType = announcedPlayerType;
-    if(playerType == "codemaker"){setStatus("Please pick a code!")}
-    else {setStatus("Please wait for other player to pick code!")}
-}
+var server = new WebSocket("ws://localhost:3000");
+var game = new Game();
 
-//incoming from server: Codemaker has made a code. Game starts
-function startRound(){
-    currentGuess = 0;
-    setRound(currentRound + 1);
-    if(playerType == "codebreaker"){
-        setStatus("Player has picked a code. Please submit a guess");
-    }
-    else
-    {
-        setStatus("Waiting for the other player to make a guess");
-    }
-}
+server.onmessage = function(event){
+    var message = Message.decode(event.data);
 
-function endRound(result){
-    if(currentRound==MAXROUNDS){
-        setStatus("Game has ended! " + result);
-    }
-    else{
-    currentRound++;
-    clearBoard();
-    setStatus("Round ended!")
-}
-    //Todo: something with result. show.
-}
-
-//incoming from server: the codebreaker's guess
-function announceGuess(guess){
-    setGuess(currentGuess, guess);
-}
-
-//incoming from server: the keys for last guess (correct/or in combination)
-//black denotes correct position
-//white denotes color in combination but not at correct position
-function announceKeys(keys)
-{
-    var numberOfBlack = keys[0];
-    var numberOfWhite = keys[1];
-    //first put all the blackpins
-    for(j = 0; j < numberOfBlack; j++)
-    {
-        keypin(currentGuess, j, 'black');        
-    }
-    for(k = numberOfBlack; k < numberOfBlack+numberOfWhite; k++)
-    {
-        keypin(currentGuess, k, 'white');
-    }
-    currentGuess++;
-    if(playerType == "codebreaker"){
-        setStatus("Keep trying ;)");
-    }
-    else
-    {
-        setStatus("Other player has made guess: " + currentGuess + " /8");
-    }
-}
-
-//incoming from server: other client has disconnected. 
-function playerDisconnected()
-{
-    setStatus("The other player has left the game :(")
-}
-
-//from this client to server: submit the code (solution)
-function submitCode()
-{
-    socket.send(Message.submitCode(getSolution()));
-}
-
-//from this client to server: submit this guess
-function submitGuess()
-{
-    socket.send(Message.submitGuess(getGuess(currentGuess)));
-}
-
-function welcomeMessage()
-{
-    if(socket.readyState == socket.OPEN && playerType != "codemaker")
-    {
-        setStatus("Waiting for player");
-    }
-}
-
-var socket = new WebSocket("ws://localhost:3000");
-
-window.setTimeout(welcomeMessage, 1000);
-
-
-socket.onmessage = function(event){
-    var receivedMessage = Message.decode(event.data);
-    var receivedType = receivedMessage.type;
-    switch(receivedType) {
+    switch(message.type) {
         case "setupRound":
-            setupRound(receivedMessage.data);
+            game.setupRound(message.data);
             break;
         case "startRound":
-            startRound();
+            game.startRound();
             break;
         case "announceGuess":
-            announceGuess(receivedMessage.data);
+            game.announceGuess(message.data);
             break;
         case "announceKeys":
-            announceKeys(receivedMessage.data);
+            game.announceKeys(message.data);
             break;
         case "playerDisconnected":
-            playerDisconnected();
+            game.playerDisconnected();
             break;
         case 'endRound':
-            endRound(receivedMessage.data);
+            game.endRound(message.data);
             break;
     };
+}
+
+function Game(){
+
+    this.playerType = "";
+    this.currentGuess = 0;
+    this.currentRound = 0;
+    board.setup();
+
+    this.setupRound = function(playerType){
+        this.playerType = playerType;
+
+        if (this.playerType == "codemaker"){
+            sidebar.setStatus("Please pick a code!");
+        }
+        else if (this.playerType == "codebreaker"){
+            sidebar.setStatus("Please wait for other player to pick code!");
+        }
+    }
+
+    this.startRound = function(){
+        this.currentGuess = 0;
+
+        sidebar.setRound(this.currentRound + 1);
+
+        if (this.playerType == "codebreaker"){
+            sidebar.setStatus("Player has picked a code. Please submit a guess");
+        }
+        else if (this.playerType == "codemaker"){
+            sidebar.setStatus("Waiting for the other player to make a guess");
+        }
+    }
+
+    this.endRound = function(result){
+        if (this.currentRound == MAXROUNDS){
+            sidebar.setStatus("Game has ended! " + result);
+        }
+        else {
+            this.currentRound++;
+            sidebar.clearBoard();
+            sidebar.setStatus("Round ended!")
+        }
+
+        // TODO: show result.
+    }
+
+    this.submit = function() {
+        if(this.playerType == "codebreaker"){
+            this.submitGuess();
+        }
+        else{
+            this.submitCode();
+        }
+    }
+
+    this.submitGuess = function(){
+        var guess = board.getGuess(this.currentGuess);
+        server.send(Message.submitGuess(guess));
+    }
+
+    this.submitCode = function(){
+        var solution = board.getSolution();
+        server.send(Message.submitCode(solution));
+    }
+
+    this.announceGuess = function(guess){
+        board.setGuess(this.currentGuess, guess);
+    }
+
+    this.announceKeys = function(keys){
+        // Black denotes the number of colors in the correct position.
+        // White denotes the number of colors that are correct, but are not in correct position.
+        var black = keys[0];
+        var white = keys[1];
+
+        // Set all the black keys first.
+        for(j = 0; j < black; j++)
+        {
+            board.setKey(this.currentGuess, j, 'black');
+        }
+
+        // Then set all the white keys.
+        for(k = black; k < black + white; k++)
+        {
+            board.setKey(this.currentGuess, k, 'white');
+        }
+
+        // Increment the current guess.
+        this.currentGuess++;
+
+        if (this.playerType == "codebreaker"){
+            sidebar.setStatus("Keep trying ;)");
+        }
+        else if (this.playerType == "codemaker")
+        {
+            sidebar.setStatus("Other player has made guess: " + this.currentGuess + " /8");
+        }
+    }
+
+    this.playerDisconnected = function(){
+        sidebar.setStatus("The other player has left the game :(");
+    }
 }
