@@ -1,5 +1,5 @@
 body {
-    background-color: #faf9f9;
+	background-color: #faf9f9;
 }
 
 .menu{
@@ -111,7 +111,10 @@ body {
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 110%;
     color: #faf9f9;
-    text-align: center;
+	text-align: center;
+	transition: all 0.25s ease-out;
+	cursor: pointer;
+	border-style: none;
 }
 
 #playbutton:hover {
@@ -268,6 +271,7 @@ body {
 	border-color:#555b6e;
 	border-radius: 50%;
 	transition: background-color 0.5s ease;
+	animation: heartbeat 1s ease-in-out both;
 }
 
 .key-peg-slot {
@@ -291,3 +295,113 @@ body {
 	filter: blur(1px); 
 	pointer-events: none;
 }
+
+@keyframes heartbeat {
+	from {
+	  -webkit-transform: scale(1);
+			  transform: scale(1);
+	  -webkit-transform-origin: center center;
+			  transform-origin: center center;
+	  -webkit-animation-timing-function: ease-out;
+			  animation-timing-function: ease-out;
+	}
+	10% {
+	  -webkit-transform: scale(0.91);
+			  transform: scale(0.91);
+	  -webkit-animation-timing-function: ease-in;
+			  animation-timing-function: ease-in;
+	}
+	17% {
+	  -webkit-transform: scale(0.98);
+			  transform: scale(0.98);
+	  -webkit-animation-timing-function: ease-out;
+			  animation-timing-function: ease-out;
+	}
+	33% {
+	  -webkit-transform: scale(0.87);
+			  transform: scale(0.87);
+	  -webkit-animation-timing-function: ease-in;
+			  animation-timing-function: ease-in;
+	}
+	45% {
+	  -webkit-transform: scale(1);
+			  transform: scale(1);
+	  -webkit-animation-timing-function: ease-out;
+			  animation-timing-function: ease-out;
+	}
+  }
+
+  .wrap-collabsible {
+  margin-bottom: 1.2rem 0;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.lbl-toggle {
+  display: block;
+  padding:10px;
+  display: block;
+  background-color: #89b0ae;
+  border: none;
+  border-radius: 5px;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 110%;
+  color: #faf9f9;
+
+  text-align: center;
+
+  padding: 1rem;
+
+  cursor: pointer;
+
+  border-radius: 7px;
+  transition: all 0.25s ease-out;
+}
+
+.lbl-toggle:hover {
+	background-color: #9ebcb6;
+}
+
+.lbl-toggle::before {
+  content: ' ';
+  display: inline-block;
+
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid currentColor;
+  vertical-align: middle;
+  margin-right: .7rem;
+  transform: translateY(-2px);
+
+  transition: transform 1s ease-out;
+}
+
+.toggle:checked + .lbl-toggle::before {
+  transform: rotate(90deg) translateX(-3px);
+}
+
+.collapsible-content {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height .25s ease-in-out;
+}
+
+.toggle:checked + .lbl-toggle + .collapsible-content {
+  max-height: 350px;
+}
+
+.toggle:checked + .lbl-toggle {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.collapsible-content .content-inner {
+	margin: 5px;
+	text-align: justify;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 70%;
+	color: #555b6e;
+}
+  
