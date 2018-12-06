@@ -26,7 +26,7 @@ function Board(){
 
         // Generates 12 rows of code and key slots.
         for (var i = 0; i < MAXGUESSES + 1; i++) {
-            content += '<div class="code-peg-grid hidden" id=row' + i + '>';
+            content += '<div class="code-peg-grid hidden" id="row' + i + '">';
 
             // Generates 4 columns of code slots.
             for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
@@ -49,7 +49,7 @@ function Board(){
         guesses.innerHTML += content;
 
         // Generate new html for the solution element.
-        content = '<div class="code-peg-grid" id=solutionrow>';
+        content = '<div class="code-peg-grid" id="solutionrow">';
         // Generate 4 columns of the solution code slots.
         for (var i = 0; i < NUMBEROFCODESLOTS; i++) {
             content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';

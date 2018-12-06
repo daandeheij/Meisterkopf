@@ -49,6 +49,7 @@ function Game(){
             sidebar.setStatus("Please pick a code!");
             board.showSolution();
             board.showColorPicker();
+            board.showButton();
         }
         else if (this.playerType == "codebreaker"){
             sidebar.setStatus("Please wait for other player to pick code!");
@@ -65,10 +66,13 @@ function Game(){
         if (this.playerType == "codebreaker"){
             sidebar.setStatus("Player has picked a code. Please submit a guess");
             board.showColorPicker();
+            board.showButton();
+            board.showRow(this.currentGuess);
         }
         else if (this.playerType == "codemaker"){
             sidebar.setStatus("Waiting for the other player to make a guess");
             board.hideColorPicker();
+            board.hideButton();
         }
     }
 
@@ -155,13 +159,14 @@ function Game(){
 
         // Increment the current guess.
         this.currentGuess++;
-
         if (this.playerType == "codebreaker"){
             sidebar.setStatus("Keep trying ;)");
+            board.showRow(this.currentGuess);
         }
         else if (this.playerType == "codemaker")
         {
             sidebar.setStatus("Other player has made guess: " + this.currentGuess + " / " + (MAXGUESSES + 1));
+            board.showRow(this.currentGuess-1);
         }
     }
 
