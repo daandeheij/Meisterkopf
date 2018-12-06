@@ -1,5 +1,5 @@
 const MAXROUNDS = 1;
-const MAXGUESSES = 11;
+const MAXGUESSES = 7;
 
 var server = new WebSocket("ws://localhost:3000");
 var game = new Game();
@@ -34,6 +34,10 @@ function Game(){
     this.playerType = "";
     this.currentGuess = 0;
     this.currentRound = 0;
+
+    this.score = 0;
+    this.opponentScore = 0;
+
     board.setup();
 
     this.setupRound = function(playerType){
@@ -65,16 +69,43 @@ function Game(){
     }
 
     this.endRound = function(result){
-        if (this.currentRound == MAXROUNDS){
-            sidebar.setStatus("Game has ended! " + result);
+        var wonRound = false;
+
+        if (this.playerType == "codemaker" && result == "fail"){
+            this.score++;
+            wonRound = true;
         }
-        else {
-            this.currentRound++;
-            sidebar.clearBoard();
-            sidebar.setStatus("Round ended!")
+        else if (this.playerType == "codemaker" && result == "success"){
+            this.opponentScore++;
+        }
+        else if (this.playerType == "codebreaker" && result == "fail"){
+            this.opponentScore++;
+        }
+        else if (this.playerType == "codebreaker" && result == "success"){
+            this.score++;
+            wonRound = true;
         }
 
-        // TODO: show result.
+        if(this.currentRound == MAXROUNDS && score > opponentScore){
+            sidebar.setStatus("You have won the game!");
+        }
+        else if(this.currentRound == MAXROUNDS && score == opponentScore){
+            sidebar.setStatus("The game ended in a tie!");
+        }
+        else if(this.currentRound == MAXROUNDS && score < opponentScore){
+            sidebar.setStatus("Your opponent has won the game!");
+        }
+        else if(this.currentRound < MAXROUNDS){
+            this.currentRound++;
+            board.reset();
+
+            if(wonRound){
+                sidebar.setStatus("You has won this rpund!");
+            }
+            else{
+                sidebar.setStatus("Your opponent has won this round!");
+            }
+        }
     }
 
     this.submit = function() {
@@ -126,7 +157,7 @@ function Game(){
         }
         else if (this.playerType == "codemaker")
         {
-            sidebar.setStatus("Other player has made guess: " + this.currentGuess + " /8");
+            sidebar.setStatus("Other player has made guess: " + this.currentGuess + " / " + (MAXGUESSES + 1));
         }
     }
 
