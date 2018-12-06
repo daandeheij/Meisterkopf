@@ -13,10 +13,6 @@ const NUMBEROFKEYSLOTS = 4;
 
 var board = new Board();
 var sidebar = new Sidebar();
-var colorpicker = new Colorpicker();
-
-// Call update clock every second.
-var clock = setInterval(sidebar.updateClock, 1000);
 
 function Board(){
 
@@ -184,14 +180,12 @@ function Board(){
 
 function Sidebar(){
 
-    this.startTime = Math.floor(Date.now() / 1000);
+    this.startTime = null;
     this.timeLabel = document.getElementById("timeLabel");
     this.statusLabel = document.getElementById("statusLabel");
     this.roundLabel = document.getElementById("roundLabel");
 
     this.updateClock = function(){
-        console.log("TEST");
-
         var currentTime = Math.floor(Date.now() / 1000);
         var elapsed = currentTime - sidebar.startTime;
 

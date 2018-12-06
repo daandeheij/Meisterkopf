@@ -50,6 +50,10 @@ function Game(){
     this.startRound = function(){
         this.currentGuess = 0;
 
+        // Call update clock every second.
+        sidebar.startTime = Math.floor(Date.now() / 1000);
+        setInterval(sidebar.updateClock, 1000);
+
         sidebar.setRound(this.currentRound + 1);
 
         if (this.playerType == "codebreaker"){

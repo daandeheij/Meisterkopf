@@ -74,10 +74,6 @@ gameServer.on("connection", function(player) {
     // Assign a unique player id to the player.
     player.id = playerIdCounter++;
 
-    //serve cookie to user
-
-    res.cookie('gamesPlayed', 'cookievalue', { maxAge: 900000, httpOnly: true });
-
     console.log("Player " + player.id + " has connected to the server.");
 
     // Add the player to the matchmaking queue.
