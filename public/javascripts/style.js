@@ -25,7 +25,7 @@ function Board(){
         var content = '';
 
         // Generates 12 rows of code and key slots.
-        for (var i = 0; i < MAXGUESSES; i++) {
+        for (var i = 0; i < MAXGUESSES + 1; i++) {
             content += '<div class="code-peg-grid">';
 
             // Generates 4 columns of code slots.

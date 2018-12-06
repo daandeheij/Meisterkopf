@@ -1,5 +1,5 @@
 const MAXROUNDS = 1;
-const MAXGUESSES = 11;
+const MAXGUESSES = 7;
 
 var server = new WebSocket("ws://localhost:3000");
 var game = new Game();
