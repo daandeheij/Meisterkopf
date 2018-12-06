@@ -24,7 +24,7 @@ V- Display score to user win/lose
     - submitting code
     - Background music
 - CSS requirements (both splashscreen and gamescreen):
-    - :hover, :active
+    V- :hover, :active
     - ::after, ::before
     - position:relative, position:absolute
     - At least 1 animation, 1 transition
