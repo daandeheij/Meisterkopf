@@ -3,17 +3,18 @@ An online, multiplayer javascript implementation of the classic game 'Mastermind
 
 TODO:
 
-- Implement disable/enable elements in game.js
-    -Player disconnect
-    -announce guess, announce pins
+V- Implement disable/enable elements in game.js
+    V-Player disconnect
+    V-announce guess, announce pins
     
 - Requirements in assignment
     - Fullscreen mode
     - Checking resolution user and alert if below
-    - Aborting game after player disconnect
+    V- Aborting game after player disconnect
     - Upload screenshots page
-    - Show value of cookie
-- Keeping score (by client or server), - Display to user win/lose
+    V- Show value of cookie
+V- Keeping score (by client or server)
+V- Display score to user win/lose
 - 'Create a how to play'
 - Sounds (non-exhaustive list)
     - Game start
@@ -23,7 +24,7 @@ TODO:
     - submitting code
     - Background music
 - CSS requirements (both splashscreen and gamescreen):
-    - :hover, :active
+    V- :hover, :active
     - ::after, ::before
     - position:relative, position:absolute
     - At least 1 animation, 1 transition
@@ -31,16 +32,16 @@ TODO:
     - Announcing guess and pins (perhaps let these fade in)
     - Splash: how to play appear
     - Optional: - Entering game screen (fade as well ?) smooth transition splash --> game
-- Check validity game move
-    - Is submitGuess by codebreaker
-    - Is submitCode by codemaker
-    - Is submitGuess a valid guess (4 colors)
-- Create board object
-- 'Additional explanations on mouse over UI objects'
+V- Check validity game move
+    V- Is submitGuess by codebreaker
+    V- Is submitCode by codemaker
+    V- Is submitGuess a valid guess (4 colors)
+V- Create board object
 - Test whether NPM install and NPM start is sufficient for running server
 - Reduce redundancy
 
 -very optional
+- 'Additional explanations on mouse over UI objects'
 - Deploy
 - Add option to play against specific user (using invite url/name/something)
     -let user specify #rounds

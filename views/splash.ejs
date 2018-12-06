@@ -7,16 +7,16 @@
 
 <body>
 	<div class="menu">
-		<img class="logo" src="images/logo.png" alt="logo"> 
+		<img id="menu-logo" src="images/logo.png" alt="logo"> 
 	</div> 
 	<div class="menu">
 		<p class="title">MEISTERKOPF</p>
 	</div> 
 	<div class="menu">
-		<button id="playbutton" type="button">PLAY</button> 
+		<div id="play-button" type="button" onclick="window.location='/play';">PLAY</div> 
 	</div> 
 	<div class="menu">
-			<div class="wrap-collabsible">
+			<div class="wrap-collabsible" id="howtoplay-button">
 					<input id="collapsible" class="toggle" type="checkbox">
 					<label for="collapsible" class="lbl-toggle">HOW TO PLAY</label>
 					<div class="collapsible-content">
@@ -29,8 +29,7 @@
 					  </div>
 					</div>
 				  </div>
-		
-	</div> 
+	
 	<div class="menu">
 
         <hr>

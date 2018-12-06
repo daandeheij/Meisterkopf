@@ -241,6 +241,7 @@ function Board(){
 function Sidebar(){
 
     this.startTime = null;
+    this.scoreLabel = document.getElementById("scoreLabel");
     this.timeLabel = document.getElementById("timeLabel");
     this.statusLabel = document.getElementById("statusLabel");
     this.roundLabel = document.getElementById("roundLabel");
@@ -265,6 +266,10 @@ function Sidebar(){
             i = "0" + i;
         };
         return i;
+    }
+
+    this.setScore = function(score){
+        scoreLabel.innerHTML = "SCORE " + score;
     }
 
     this.setStatus = function(status) {

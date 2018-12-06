@@ -94,6 +94,8 @@ function Game(){
             wonRound = true;
         }
 
+        sidebar.setScore(this.score);
+
         if(this.currentRound == MAXROUNDS && score > opponentScore){
             sidebar.setStatus("You have won the game!");
         }
@@ -108,7 +110,7 @@ function Game(){
             board.reset();
 
             if(wonRound){
-                sidebar.setStatus("You has won this rpund!");
+                sidebar.setStatus("You have won this round!");
             }
             else{
                 sidebar.setStatus("Your opponent has won this round!");
@@ -173,7 +175,8 @@ function Game(){
     this.playerDisconnected = function(){
         sidebar.setStatus("The other player has left the game :(");
         board.disable();
-        hideColorPicker();
-        hideButton();
+        board.hideColorPicker();
+        board.hideButton();
+        setTimeout(function(){ window.location = '/'; }, 3000);
     }
 }
