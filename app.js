@@ -23,10 +23,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
-    res.render('splash.ejs', { playersOnline: 2, gamesPlayed: gamesPlayed, minutesPlayed: minutesPlayed });
-})
+    var pageVisits;
+   if(req.cookies['pageVisits'] > 0){
+       //user has visited page before
+       pageVisits = parseInt(req.cookies['pageVisits']) + 1;
+   }
+   else{pageVisits = 1;}
+   //set the cookie with new value
+   res.cookie('pageVisits', pageVisits, { maxAge: 900000, httpOnly: true });
+   res.render('splash.ejs', { playersOnline: 2, gamesPlayed: gamesPlayed, minutesPlayed: minutesPlayed });
+});
 
 app.get('/play', indexRouter);
 
@@ -63,9 +71,12 @@ const MAXGUESSES = 7;
 const MAXROUNDS = 1;
 
 gameServer.on("connection", function(player) {
-
     // Assign a unique player id to the player.
     player.id = playerIdCounter++;
+
+    //serve cookie to user
+
+    res.cookie('gamesPlayed', 'cookievalue', { maxAge: 900000, httpOnly: true });
 
     console.log("Player " + player.id + " has connected to the server.");
 
