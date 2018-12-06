@@ -26,7 +26,7 @@ function Board(){
 
         // Generates 12 rows of code and key slots.
         for (var i = 0; i < MAXGUESSES + 1; i++) {
-            content += '<div class="code-peg-grid">';
+            content += '<div class="code-peg-grid hidden" id=row' + i + '>';
 
             // Generates 4 columns of code slots.
             for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
@@ -49,8 +49,7 @@ function Board(){
         guesses.innerHTML += content;
 
         // Generate new html for the solution element.
-        content = '<div class="code-peg-grid">';
-
+        content = '<div class="code-peg-grid" id=solutionrow>';
         // Generate 4 columns of the solution code slots.
         for (var i = 0; i < NUMBEROFCODESLOTS; i++) {
             content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
@@ -66,6 +65,7 @@ function Board(){
     this.reset = function(){
         for (var i = 0; i < MAXGUESSES + 1; i++) {
             for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
+                board.hideRow(j);
                 var codeslot = document.getElementById("guess-" + i + '-' + j);
                 var keyslot = document.getElementById("key-" + i + '-' + j);
                 codeslot.style.backgroundColor = "#f1f1f1";
@@ -74,6 +74,7 @@ function Board(){
         }
         for (var i = 0; i < 4; i++)
         {
+            board.hideSolution();
             var solutionslot = document.getElementById("solution-" + i);
             solutionslot.style.backgroundColor = "#f1f1f1";
         }
@@ -87,6 +88,56 @@ function Board(){
     this.enable = function(){
         var boardElement = document.getElementById("board");
         boardElement.classList.remove("disabled");
+    }
+
+    this.show = function(){
+        var boardElement = document.getElementById("board");
+        boardElement.classList.remove("hidden");
+    }
+
+    this.hide = function(){
+        var boardElement = document.getElementById("board");
+        boardElement.classList.add("hidden");
+    }
+
+    this.showRow = function(row){
+        var rowElement = document.getElementById("row" + row);
+        rowElement.classList.remove("hidden");
+    }
+
+    this.hideRow = function(row){
+        var rowElement = document.getElementById("row" + row);
+        rowElement.classList.add("hidden");
+    }
+
+    this.showSolution = function(){
+        var rowElement = document.getElementById("solution");
+        rowElement.classList.remove("hidden");
+    }
+
+    this.hideSolution = function(){
+        var rowElement = document.getElementById("solution");
+        rowElement.classList.add("hidden");
+    }
+
+    this.showColorPicker = function(){
+        var colorPickerElement = document.getElementById("color-picker");
+        colorPickerElement.classList.remove("hidden");
+    }
+
+    this.hideColorPicker = function(){
+        var colorPickerElement = document.getElementById("color-picker");
+        colorPickerElement.classList.add("hidden");
+    }
+
+    this.showButton = function(){
+        var button = document.getElementById("submit-button");
+        button.classList.remove("hidden");
+    }
+
+    this.hideButton = function(){
+        var button = document.getElementById("submit-button");
+        button.classList.add("hidden");
     }
 
     this.setKey = function(row, pin, color){
@@ -232,7 +283,16 @@ function Sidebar(){
     this.enable = function(){
         var sidebarElement = document.getElementById("side-bar");
         sidebarElement.classList.remove("disabled");
-        sidebar.classList.add("enabled");
+    }
+
+    this.hide = function(){
+        var sidebarElement = document.getElementById("side-bar");
+        sidebarElement.classList.add("hidden");
+    }
+
+    this.show = function(){
+        var sidebarElement = document.getElementById("side-bar");
+        sidebarElement.classList.remove("hidden");
     }
 }
 

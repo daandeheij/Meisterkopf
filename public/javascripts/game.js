@@ -39,12 +39,16 @@ function Game(){
     this.opponentScore = 0;
 
     board.setup();
+    board.show();
+    sidebar.show();
 
     this.setupRound = function(playerType){
         this.playerType = playerType;
-
+        sidebar.setRound(this.currentRound + 1);
         if (this.playerType == "codemaker"){
             sidebar.setStatus("Please pick a code!");
+            board.showSolution();
+            board.showColorPicker();
         }
         else if (this.playerType == "codebreaker"){
             sidebar.setStatus("Please wait for other player to pick code!");
@@ -58,13 +62,13 @@ function Game(){
         sidebar.startTime = Math.floor(Date.now() / 1000);
         setInterval(sidebar.updateClock, 1000);
 
-        sidebar.setRound(this.currentRound + 1);
-
         if (this.playerType == "codebreaker"){
             sidebar.setStatus("Player has picked a code. Please submit a guess");
+            board.showColorPicker();
         }
         else if (this.playerType == "codemaker"){
             sidebar.setStatus("Waiting for the other player to make a guess");
+            board.hideColorPicker();
         }
     }
 
