@@ -64,7 +64,7 @@ function Board(){
     }
 
     this.reset = function(){
-        for (var i = 0; i < NUMBEROFROWS; i++) {
+        for (var i = 0; i < MAXGUESSES + 1; i++) {
             for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
                 var codeslot = document.getElementById("guess-" + i + '-' + j);
                 var keyslot = document.getElementById("key-" + i + '-' + j);
