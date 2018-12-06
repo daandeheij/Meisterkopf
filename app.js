@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
    else{pageVisits = 1;}
    //set the cookie with new value
    res.cookie('pageVisits', pageVisits, { maxAge: 900000, httpOnly: true });
-   res.render('splash.ejs', { playersOnline: 2, gamesPlayed: gamesPlayed, minutesPlayed: minutesPlayed });
+   res.render('splash.ejs', { playersOnline: (games.size + queue.length), gamesPlayed: gamesPlayed, minutesPlayed: Math.round(minutesPlayed), pageVisits: pageVisits });
 });
 
 app.get('/play', indexRouter);
@@ -67,6 +67,8 @@ var minutesPlayed = 0;
 var playerIdCounter = 0;
 var gameIdCounter = 0;
 
+const NUMBEROFCODESLOTS = 4;
+const NUMBEROFKEYSLOTS = 4;
 const MAXGUESSES = 7;
 const MAXROUNDS = 1;
 
@@ -118,10 +120,14 @@ gameServer.on("connection", function(player) {
         // Read the message.
         switch(message.type) {
             case "submitCode":
-                game.submitCode(message.data);
+                if(player == game.codemaker){
+                    game.submitCode(message.data);
+                }
                 break;
             case "submitGuess":
-                game.submitGuess(message.data);
+                if(player == game.codebreaker){
+                    game.submitGuess(message.data);
+                }
                 break;
         }
     });
@@ -191,12 +197,23 @@ function Game(playerA, playerB){
     }
 
     this.submitCode = function(code){
+        if(!this.isValid(code)){
+            // The guess isn't valid, return.
+            return;
+        }
+
         console.log("Codemaker of game " + this.id + " has sumbitted code " + code);
+
         this.code = code;
         this.startRound();
     }
 
     this.submitGuess = function(guess){
+        if(!this.isValid(guess)){
+            // The guess isn't valid, return.
+            return;
+        }
+
         console.log("Codebreaker of game " + this.id + " has sumbitted guess " + guess);
 
         // There are still guesses and rounds left, announce the guess.
@@ -219,6 +236,25 @@ function Game(playerA, playerB){
             // The guess was wrong and there are no guesses left, end the round.
             this.endRound("fail");
         }
+    }
+
+    this.isValid = function(code){
+        if(code.length != NUMBEROFCODESLOTS){
+            return false;
+        }
+
+        for(var i = 0; i < NUMBEROFCODESLOTS; i++){
+            if (code[i] == "YELLOW" ||
+                code[i] == "PINK" ||
+                code[i] == "BLUE" ||
+                code[i] == "GREEN" ||
+                code[i] == "RED" ||
+                code[i] == "BROWN"){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     this.getKeys = function(guess){
@@ -259,11 +295,11 @@ function Game(playerA, playerB){
 
         if(this.roundsLeft()){
             // There are rounds left, start a new round.
-            this.newRound();
+            setTimeout(this.newRound.bind(this), 2000);
         }
         else{
             // There are no rounds left, end the game.
-            this.endGame();
+            setTimeout(this.endGame.bind(this), 2000);
         }
     }
 
