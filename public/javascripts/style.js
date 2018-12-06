@@ -233,6 +233,7 @@ function Sidebar(){
     this.enable = function(){
         var sidebarElement = document.getElementById("side-bar");
         sidebarElement.classList.remove("disabled");
+        sidebar.classList.add("enabled");
     }
 }
 

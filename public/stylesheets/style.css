@@ -134,7 +134,8 @@ body {
 	height: 430px;
 	border-radius: 10px;
 	background-color: #eaeaea;
-	margin-bottom:10px;
+	margin-bottom:10px; 
+	transition: opacity 5s, filter 5s;
 }
 
 #color-picker{
@@ -278,7 +279,13 @@ body {
 }
 
 .disabled {
-	opacity: 0.2; 
-	filter: alpha(Opacity=90);
+	opacity: 0.2;
+	filter: blur(1px); 
+	pointer-events: none;
+}
+
+.hidden {
+	opacity: 0;
+	filter: blur(1px); 
 	pointer-events: none;
 }

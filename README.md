@@ -3,14 +3,16 @@ An online, multiplayer javascript implementation of the classic game 'Mastermind
 
 TODO:
 
-
-- 'Disable/enable relevant UI objects'
+- Implement disable/enable elements in game.js
+    -Player disconnect
+    -announce guess, announce pins
+    
 - Requirements in assignment
     - Fullscreen mode
     - Checking resolution user and alert if below
     - Aborting game after player disconnect
     - Upload screenshots page
-    - Client-side cookie to report how many times user has accessed game
+    - Show value of cookie
 - Keeping score (by client or server), - Display to user win/lose
 - 'Create a how to play'
 - Sounds (non-exhaustive list)
