@@ -6,8 +6,8 @@
 </head> 
 
 <body>
-	<div class="container">
-		<div class="board">
+	<div id="container">
+		<div id="board">
 			<div id="guesses">
 				<!--
 				<div class="code-peg-grid">
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 		
-		<div class="side-bar">
+		<div id="side-bar">
 			<img class="side-bar-logo" src="images/logo.png" alt="logo">
 			<hr>
 			<p class="side-bar-text" id="roundLabel">ROUND 1/2</p>
@@ -48,8 +48,8 @@
 			<p class="side-bar-status-text" id="statusLabel">Waiting for player</p>
 		</div>
 		
-		<div class="color-picker">
-			<div class="color-picker-grid">
+		<div id="color-picker">
+			<div id="color-picker-grid">
 				<div class="color-picker-grid-item"><div id="color-picker-slot-0" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
 				<div class="color-picker-grid-item"><div id="color-picker-slot-1" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
 				<div class="color-picker-grid-item"><div id="color-picker-slot-2" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
@@ -57,7 +57,7 @@
 				<div class="color-picker-grid-item"><div id="color-picker-slot-4" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
 				<div class="color-picker-grid-item"><div id="color-picker-slot-5" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
 			</div>
-			<div class="submit-button" onclick="game.submit()">SUBMIT</div>
+			<div id="submit-button" onclick="game.submit()">SUBMIT</div>
 		</div>
 		
 	</div>

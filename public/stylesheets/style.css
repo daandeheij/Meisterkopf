@@ -122,14 +122,13 @@ body {
     background-color: #bee3db;
 }
 
-.container{
+#container{
 	width: 500px;
 	margin:auto;
 	margin-top:30px;
-	//border: 1px solid green;
 }
 
-.board{
+#board{
 	float:left;
 	width: 300px;
 	height: 430px;
@@ -138,12 +137,12 @@ body {
 	margin-bottom:10px;
 }
 
-.color-picker{
+#color-picker{
 	width: 500px;
 	height: 60px;
 }
 
-.color-picker-grid{
+#color-picker-grid{
 	float:left;
 	width: 300px;
 	height: 50px;
@@ -193,7 +192,7 @@ body {
 	background-color:#704c55;
 }
 
-.submit-button{
+#submit-button{
 	float:left;
 	width: 100px;
 	height: 30px;
@@ -212,7 +211,7 @@ body {
     text-align: center;
 }
 
-.side-bar{
+#side-bar{
 	float:left;
 	width: 120px;
 	height: 430px;

@@ -80,6 +80,16 @@ function Board(){
         }
     }
 
+    this.disable = function(){
+        var boardElement = document.getElementById("board");
+        boardElement.classList.add("disabled");
+    }
+
+    this.enable = function(){
+        var boardElement = document.getElementById("board");
+        boardElement.classList.remove("disabled");
+    }
+
     this.setKey = function(row, pin, color){
         var pinToChange = document.getElementById('key-' + row + '-' + pin);
         pinToChange.style.backgroundColor = color;
@@ -213,6 +223,16 @@ function Sidebar(){
 
     this.setRound = function(round) {
         roundLabel.innerHTML = "ROUND " + round + "/2";
+    }
+
+    this.disable = function(){
+        var sidebarElement = document.getElementById("side-bar");
+        sidebarElement.classList.add("disabled");
+    }
+
+    this.enable = function(){
+        var sidebarElement = document.getElementById("side-bar");
+        sidebarElement.classList.remove("disabled");
     }
 }
 
