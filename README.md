@@ -3,9 +3,7 @@ An online, multiplayer javascript implementation of the classic game 'Mastermind
 
 TODO:
 
-- 'LaTeX'
-    -Messages
-    -
+
 - 'Disable/enable relevant UI objects'
 - Requirements in assignment
     - Fullscreen mode
@@ -45,3 +43,6 @@ TODO:
 - Add option to play against specific user (using invite url/name/something)
     -let user specify #rounds
     - extra in-game label that shows current score
+
+    - DONE'LaTeX'
+    -DONE Messages
