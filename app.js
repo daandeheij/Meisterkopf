@@ -327,8 +327,8 @@ function Game(playerA, playerB){
             this.playerA.send(Message.playerDisconnected());
         }
 
-        // End the game.
-        this.endGame();
+        // End the game after two seconds.
+        setTimeout(this.endGame.bind(this), 2000);
     }
 
     this.endGame = function(){

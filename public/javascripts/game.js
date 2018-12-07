@@ -43,10 +43,13 @@ function Game(){
     sidebar.show();
 
     this.setupRound = function(playerType){
+
         this.playerType = playerType;
         sidebar.setRound(this.currentRound + 1);
+
         if (this.playerType == "codemaker"){
             sidebar.setStatus("Please pick a code!");
+
             board.showSolution();
             board.showColorPicker();
             board.showButton();
@@ -63,14 +66,19 @@ function Game(){
         sidebar.startTime = Math.floor(Date.now() / 1000);
         setInterval(sidebar.updateClock, 1000);
 
+        // Play a sound.
+        sound.play();
+
         if (this.playerType == "codebreaker"){
             sidebar.setStatus("Player has picked a code. Please submit a guess");
+
             board.showColorPicker();
             board.showButton();
             board.showRow(this.currentGuess);
         }
         else if (this.playerType == "codemaker"){
             sidebar.setStatus("Waiting for the other player to make a guess");
+
             board.hideColorPicker();
             board.hideButton();
         }
@@ -78,6 +86,8 @@ function Game(){
 
     this.endRound = function(result){
         var wonRound = false;
+
+        board.hideRow(this.currentGuess);
 
         if (this.playerType == "codemaker" && result == "fail"){
             this.score++;
@@ -96,17 +106,21 @@ function Game(){
 
         sidebar.setScore(this.score);
 
-        if(this.currentRound == MAXROUNDS && score > opponentScore){
+        if(this.currentRound == MAXROUNDS && this.score > this.opponentScore){
             sidebar.setStatus("You have won the game!");
+            this.endGame();
         }
-        else if(this.currentRound == MAXROUNDS && score == opponentScore){
+        else if(this.currentRound == MAXROUNDS && this.score == this.opponentScore){
             sidebar.setStatus("The game ended in a tie!");
+            this.endGame();
         }
-        else if(this.currentRound == MAXROUNDS && score < opponentScore){
+        else if(this.currentRound == MAXROUNDS && this.score < this.opponentScore){
             sidebar.setStatus("Your opponent has won the game!");
+            this.endGame();
         }
         else if(this.currentRound < MAXROUNDS){
             this.currentRound++;
+
             board.reset();
 
             if(wonRound){
@@ -139,6 +153,7 @@ function Game(){
 
     this.announceGuess = function(guess){
         board.setGuess(this.currentGuess, guess);
+        sound.play();
     }
 
     this.announceKeys = function(keys){
@@ -161,6 +176,7 @@ function Game(){
 
         // Increment the current guess.
         this.currentGuess++;
+
         if (this.playerType == "codebreaker"){
             sidebar.setStatus("Keep trying ;)");
             board.showRow(this.currentGuess);
@@ -168,7 +184,7 @@ function Game(){
         else if (this.playerType == "codemaker")
         {
             sidebar.setStatus("Other player has made guess: " + this.currentGuess + " / " + (MAXGUESSES + 1));
-            board.showRow(this.currentGuess-1);
+            board.showRow(this.currentGuess - 1);
         }
     }
 
@@ -177,6 +193,11 @@ function Game(){
         board.disable();
         board.hideColorPicker();
         board.hideButton();
+
+        this.endGame();
+    }
+
+    this.endGame = function(){
         setTimeout(function(){ window.location = '/'; }, 3000);
     }
 }

@@ -51,20 +51,21 @@
 		
 		<div id="color-picker" class="hidden">
 			<div id="color-picker-grid">
-				<div class="color-picker-grid-item"><div id="color-picker-slot-0" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-1" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-2" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-3" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-4" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-5" class="color-picker-slot" draggable="true" ondragstart="drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-0" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-1" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-2" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-3" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-4" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-5" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
 			</div>
-			<div id="submit-button" class="hidden" onclick="game.submit()">SUBMIT</div>
+			<div id="submit-button" class="hidden" onclick="game.submit();">SUBMIT</div>
 		</div>
-		
 	</div>
 
+	<script src="javascripts/splash.js"></script> 
+	<script src="javascripts/sound.js"></script>  
 	<script src="javascripts/message.js"></script>  
-	<script src="javascripts/style.js"></script>  
+	<script src="javascripts/ui.js"></script>  
 	<script src="javascripts/game.js"></script>  
 </body>
 </html>

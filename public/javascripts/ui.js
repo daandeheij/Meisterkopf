@@ -10,6 +10,7 @@ const BROWN = "#704c55";
 const NUMBEROFCODESLOTS = 4;
 const NUMBEROFKEYSLOTS = 4;
 
+var ui = new UI();
 var board = new Board();
 var sidebar = new Sidebar();
 
@@ -26,11 +27,11 @@ function Board(){
 
         // Generates 12 rows of code and key slots.
         for (var i = 0; i < MAXGUESSES + 1; i++) {
-            content += '<div class="code-peg-grid hidden" id="row' + i + '">';
+            content += '<div class="code-peg-grid hidden" id="row-' + i + '">';
 
             // Generates 4 columns of code slots.
             for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
-                content += '<div class="code-peg-grid-item"><div id="guess-' + i + '-' + j + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
+                content += '<div class="code-peg-grid-item"><div id="guess-' + i + '-' + j + '" class="code-peg-slot" ondrop="ui.drop(event)" ondragover="ui.allowDrop(event)"></div></div>';
             }
 
             content += '<div class="key-peg-grid">';
@@ -52,7 +53,7 @@ function Board(){
         content = '<div class="code-peg-grid" id="solutionrow">';
         // Generate 4 columns of the solution code slots.
         for (var i = 0; i < NUMBEROFCODESLOTS; i++) {
-            content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot" ondrop="drop(event)" ondragover="allowDrop(event)"></div></div>';
+            content += '<div class="code-peg-grid-item"><div id="solution-' + i + '" class="code-peg-slot" ondrop="ui.drop(event)" ondragover="ui.allowDrop(event)"></div></div>';
         }
 
         // Close the div.
@@ -64,8 +65,10 @@ function Board(){
 
     this.reset = function(){
         for (var i = 0; i < MAXGUESSES + 1; i++) {
+
+            board.hideRow(i);
+
             for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
-                board.hideRow(j);
                 var codeslot = document.getElementById("guess-" + i + '-' + j);
                 var keyslot = document.getElementById("key-" + i + '-' + j);
                 codeslot.style.backgroundColor = "#f1f1f1";
@@ -75,69 +78,58 @@ function Board(){
         for (var i = 0; i < 4; i++)
         {
             board.hideSolution();
+
             var solutionslot = document.getElementById("solution-" + i);
             solutionslot.style.backgroundColor = "#f1f1f1";
         }
     }
 
     this.disable = function(){
-        var boardElement = document.getElementById("board");
-        boardElement.classList.add("disabled");
+        ui.disableElement("board");
     }
 
     this.enable = function(){
-        var boardElement = document.getElementById("board");
-        boardElement.classList.remove("disabled");
+        ui.enableElement("board");
     }
 
     this.show = function(){
-        var boardElement = document.getElementById("board");
-        boardElement.classList.remove("hidden");
+        ui.showElement("board");
     }
 
     this.hide = function(){
-        var boardElement = document.getElementById("board");
-        boardElement.classList.add("hidden");
+        ui.hideElement("board");
     }
 
     this.showRow = function(row){
-        var rowElement = document.getElementById("row" + row);
-        rowElement.classList.remove("hidden");
+        ui.showElement("row-" + row);
     }
 
     this.hideRow = function(row){
-        var rowElement = document.getElementById("row" + row);
-        rowElement.classList.add("hidden");
+        ui.hideElement("row-" + row);
     }
 
     this.showSolution = function(){
-        var rowElement = document.getElementById("solution");
-        rowElement.classList.remove("hidden");
+        ui.showElement("solution");
     }
 
     this.hideSolution = function(){
-        var rowElement = document.getElementById("solution");
-        rowElement.classList.add("hidden");
+        ui.hideElement("solution");
     }
 
     this.showColorPicker = function(){
-        var colorPickerElement = document.getElementById("color-picker");
-        colorPickerElement.classList.remove("hidden");
+        ui.showElement("color-picker");
     }
 
     this.hideColorPicker = function(){
-        var colorPickerElement = document.getElementById("color-picker");
-        colorPickerElement.classList.add("hidden");
+        ui.hideElement("color-picker");
     }
 
     this.showButton = function(){
-        var button = document.getElementById("submit-button");
-        button.classList.remove("hidden");
+        ui.showElement("submit-button");
     }
 
     this.hideButton = function(){
-        var button = document.getElementById("submit-button");
-        button.classList.add("hidden");
+        ui.hideElement("submit-button");
     }
 
     this.setKey = function(row, pin, color){
@@ -281,57 +273,75 @@ function Sidebar(){
     }
 
     this.disable = function(){
-        var sidebarElement = document.getElementById("side-bar");
-        sidebarElement.classList.add("disabled");
+        ui.disableElement("side-bar");
     }
 
     this.enable = function(){
-        var sidebarElement = document.getElementById("side-bar");
-        sidebarElement.classList.remove("disabled");
+        ui.enableElement("side-bar");
     }
 
     this.hide = function(){
-        var sidebarElement = document.getElementById("side-bar");
-        sidebarElement.classList.add("hidden");
+        ui.hideElement("side-bar");
     }
 
     this.show = function(){
-        var sidebarElement = document.getElementById("side-bar");
-        sidebarElement.classList.remove("hidden");
+        ui.showElement("side-bar");
     }
 }
 
-function allowDrop(event){
-    event.preventDefault();
-}
-
-function drag(event){
-    event.dataTransfer.setData("id", event.target.id);
-}
-
-function drop(event){
-    var id = event.dataTransfer.getData("id")
-
-    switch (id) {
-        case "color-picker-slot-0":
-            event.target.style.backgroundColor = YELLOW;
-            break;
-        case "color-picker-slot-1":
-            event.target.style.backgroundColor = PINK;
-            break;
-        case "color-picker-slot-2":
-            event.target.style.backgroundColor = BLUE;
-            break;
-        case "color-picker-slot-3":
-            event.target.style.backgroundColor = GREEN;
-            break;
-        case "color-picker-slot-4":
-            event.target.style.backgroundColor = RED;
-            break;
-        case "color-picker-slot-5":
-            event.target.style.backgroundColor = BROWN;
-            break;
+function UI(){
+    this.disableElement = function(id){
+        var element = document.getElementById(id);
+        element.classList.add("disabled");
     }
 
-    event.preventDefault();
+    this.enableElement = function(id){
+        var element = document.getElementById(id);
+        element.classList.remove("disabled");
+    }
+
+    this.showElement = function(id){
+        var element = document.getElementById(id);
+        element.classList.remove("hidden");
+    }
+
+    this.hideElement = function(id){
+        var element = document.getElementById(id);
+        element.classList.add("hidden");
+    }
+
+    this.allowDrop = function(event){
+        event.preventDefault();
+    }
+    
+    this.drag = function(event){
+        event.dataTransfer.setData("id", event.target.id);
+    }
+    
+    this.drop = function(event){
+        var id = event.dataTransfer.getData("id")
+    
+        switch (id) {
+            case "color-picker-slot-0":
+                event.target.style.backgroundColor = YELLOW;
+                break;
+            case "color-picker-slot-1":
+                event.target.style.backgroundColor = PINK;
+                break;
+            case "color-picker-slot-2":
+                event.target.style.backgroundColor = BLUE;
+                break;
+            case "color-picker-slot-3":
+                event.target.style.backgroundColor = GREEN;
+                break;
+            case "color-picker-slot-4":
+                event.target.style.backgroundColor = RED;
+                break;
+            case "color-picker-slot-5":
+                event.target.style.backgroundColor = BROWN;
+                break;
+        }
+    
+        event.preventDefault();
+    }
 }
