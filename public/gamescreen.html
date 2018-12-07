@@ -51,12 +51,12 @@
 		
 		<div id="color-picker" class="hidden">
 			<div id="color-picker-grid">
-				<div class="color-picker-grid-item"><div id="color-picker-slot-0" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-1" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-2" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-3" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-4" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
-				<div class="color-picker-grid-item"><div id="color-picker-slot-5" class="color-picker-slot" draggable="true" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-0" class="color-picker-slot" draggable="true" onclick="board.fillFirstFillablePin(YELLOW)" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-1" class="color-picker-slot" draggable="true" onclick="board.fillFirstFillablePin(PINK)" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-2" class="color-picker-slot" draggable="true" onclick="board.fillFirstFillablePin(BLUE)" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-3" class="color-picker-slot" draggable="true" onclick="board.fillFirstFillablePin(GREEN)" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-4" class="color-picker-slot" draggable="true" onclick="board.fillFirstFillablePin(RED)" ondragstart="ui.drag(event)"></div></div>
+				<div class="color-picker-grid-item"><div id="color-picker-slot-5" class="color-picker-slot" draggable="true" onclick="board.fillFirstFillablePin(BROWN)" ondragstart="ui.drag(event)"></div></div>
 			</div>
 			<div id="submit-button" class="hidden" onclick="game.submit();">SUBMIT</div>
 		</div>

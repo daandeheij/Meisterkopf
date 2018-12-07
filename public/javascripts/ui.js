@@ -228,6 +228,34 @@ function Board(){
         }
         return guess;
     }
+
+    this.getFirstFillablePin = function(){
+        if(game.playerType == "codemaker"){
+            for (var i = 0; i < 4; i++){
+            var solutionslot = document.getElementById("solution-" + i);
+            if(solutionslot.style.backgroundColor == ""){
+                //solutionslot is unfilled!
+                return solutionslot;
+            }
+        }
+    }
+    else
+    {//user is code breaker
+        for (var i = 0; i < MAXGUESSES + 1; i++) {
+            for (var j = 0; j < NUMBEROFCODESLOTS; j++) {
+                var codeslot = document.getElementById("guess-" + i + '-' + j);
+                if(codeslot.style.backgroundColor == ""){
+                    return codeslot;
+                }
+            }
+    }
+    }
+    }
+    
+    this.fillFirstFillablePin = function(color){
+        this.getFirstFillablePin().style.backgroundColor = color;
+    }
+
 }
 
 function Sidebar(){
