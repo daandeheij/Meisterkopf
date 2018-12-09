@@ -64,6 +64,10 @@ body {
 	color: #555b6e;
 }
 
+.side-bar-text::before{
+	content: "|";
+}
+
 .side-bar-status-text{
 	margin: 0;
     padding:0;
@@ -75,6 +79,10 @@ body {
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: 70%;
 	color: #555b6e;	
+}
+
+.side-bar-status-text::after{
+	content: "..";
 }
 
 #howtoplay-button {
@@ -322,6 +330,7 @@ body {
 	filter: blur(1px); 
 	pointer-events: none;
 }
+
 
 @keyframes heartbeat {
 	from {

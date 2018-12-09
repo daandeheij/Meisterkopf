@@ -12,13 +12,12 @@ TODO:
 
 - Requirements in assignment
     - Fullscreen mode
-    - Checking resolution user and alert if below
+    - Checking resolution user and alert if below DONE!
     - Upload screenshots page
-- Display to user win/lose
 
 - CSS requirements (both splashscreen and gamescreen):
     - :hover, :active DONE!
-    - ::after, ::before
+    - ::after, ::before DONE!
     - position:relative, position:absolute
     - At least 1 animation, 1 transition DONE!
 
