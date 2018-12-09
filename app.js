@@ -54,7 +54,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var server = http.createServer(app).listen(process.env.PORT || 3000);
+var server = http.createServer(app);
 var gameServer = new websocket.Server({ server });
 
 var Message = require("./public/javascripts/message.js");
