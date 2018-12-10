@@ -1,0 +1,79 @@
+﻿Assignment 1 
+    - Show off a HEAD and GET request via telnet. What is the difference between the two?
+		- Open the virtual machine of TUD, password is: pwd
+		- telnet www.google.com 80
+		- HEAD / HTTP/1.1
+		- HOST: www.google.com
+		- <Press Enter>
+		- ...
+		- GET / HTTP/1.1
+		- HOST: www.google.com
+		- <Press Enter>
+		- ...
+		- The difference between the HEAD and GET reuest is that when using the HEAD request, the server will return only the header of the resource, where the GET request will return the entire resource.
+    - Execute the PUT request.
+		- telnet httpbin.org 80
+		- PUT /put HTTP/1.1
+		- HOST:httpbin.org
+		- Content-type:text/plain
+		- Content-length:12
+		- <Press Enter>
+		- Hello World!
+		- <Press Enter>
+    - What is the difference between authentication using telnet vs. a browser?
+		- There is no difference, except that a browser keeps the TCP connection alive when reloading a page.
+    - What does the site's Cache-Control directive mean?
+		- It specifies how a resource is cached, where it’s cached and its maximum age before expiring.
+		- So e.g. a news site has a Cache-Control directive that has a short maximum age as news comes and goes quickly.
+    - Show off the board game design.
+		- ...
+    - Show off the four board game examples and discuss a positive and negative feature.
+		- ..?
+    - Show off the HTML. How did you decide to use 'those tags' for your board game?
+		- ...
+
+Assignment 2
+    - Show off the application's package.json and explain its purpose.
+		- Lists the packages your project depends on
+		- Specifies versions of a package that your project can use
+		- Makes your build reproducible, allows others to install it
+    - Start the server and open the browser to play the game (splash screen has a play button, N players are randomly paired to play the game, the players can execute moves).
+		- ...
+    - Explain randomly chosen functions in your code.
+		- ...
+    - Explain the data structure(s) used to keep track of the game state on the server.
+		- We used a game object that keeps track of the connected players, their game roles, the current round, the current guess, etc.
+    - How was it made possible for several players to play games at the same time?
+		- When a player connects to the server, they are placed in a queue.
+		- When the queue reaches a size of two, it is emptied and a game object is created where the players are assigned to.
+		- We used a Map data structure, where players are keys where their corresponding value is the game object that they are part of.
+    - Discuss the design pattern(s) (we discussed three in class) chosen for the game.
+		- We used the constructor design pattern in most of our objects.
+    - Show off the messages client and server exchange to communicate the game state and discuss advantages/disadvantages.
+		- Open Message.js
+		- Advantage: The message object allows any type of message to be sent over the network. (Strings, int, arrays)
+		- Disadvantage: ..?
+
+Assignment 3
+    - Start the server and open the browser to play the game (splash screen has a play button, N players are randomly paired to play the game, the players can execute moves, invalid moves are rejected).
+		- ...
+    - Show off the implemented CSS animation and explain the code.
+		- Splash screen: show the typewriter effect in the style.css file
+		- Game screen: show the heartbeat effect in the style.css file
+    - Show off the use of templating and explain the code.
+		- Show the splash.ejs file and the templating code in the app.js file.
+    - Show off the use of two different position attributes.
+		- ..X
+    - What is the difference between a CSS animation and transition?
+		- A transition is a an animation, but it has a distinct start and end state. 
+		- An animation doesn't neceseraly have a start and end state.
+    - How are the board game tiles styled with CSS? How are the movements of game elements implemented?
+		- The codemaker and codebreaker can drag and drop a div containing their chosen color onto code slot to either make a guess or a solution.
+		- When the color is dragged, the div id is referenced.
+		- When the color is dropped, the referenced div's background color is copied and set as the background color of the code slot where the color is dropped into.
+    - Show off the employed media query and explain its use.
+		- Show the media query code in splash.js where it detects the browser resolution.
+    - Show off the fullscreen game functionality and explain its use.
+		- Press f12 to make the game fullscreen.
+    - Explain the cookie code.
+		- Show the cookie code in the app.js file
