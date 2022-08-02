@@ -6,7 +6,7 @@ An online, multiplayer game inspired by the classic game [Mastermind](https://en
 
 ## Game description
 
-Meisterkopf is a 1 vs 1 online browser game. A player is either a codemaker or a codebreaker. At the start of the game, the codemaker will create a secret code of four colors. The codebreaker gets 8 guesses to guess the secret code. The players will switch roles when the round ends. After two rounds, the player with the highest score wins the game.
+Meisterkopf is a 1 vs 1 online browser game. A player is either a codemaker or a codebreaker. At the start of the game, the codemaker will create a secret code of four colors. The codebreaker gets 8 guesses to guess the secret code. The pins on the right reveal whether a color was guessed correctly (black), or whether the color is included in the secret code but on a different position (grey). The players will switch roles when the round ends. After two rounds, the player with the highest score wins the game.
 
 <img width="285" alt="image" src="https://user-images.githubusercontent.com/26594161/182420696-7aafb577-d810-4e9c-8c78-09d3f04e2afb.png">
 
